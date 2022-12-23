@@ -9,7 +9,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class MainController extends AbstractController
 {
-    #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
+    #[Route('/', name: 'app_login', methods: ['GET', 'POST'])]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -18,5 +18,26 @@ class MainController extends AbstractController
             'error' => $error,
             'last_username' => $lastUsername,
         ]);
+    }
+
+    #[Route('/logout', name: 'app_logout', methods: ['GET'])]
+    public function logout()
+    {
+        // controller can be blank: it will never be called!
+        throw new \RuntimeException('Don\'t forget to activate logout in security.yaml');
+    }
+
+    #[Route('/main', name: 'app_main', methods: ['GET'])]
+    public function main(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('main/index.html.twig');
+    }
+
+    #[Route('/blame', name: 'app_blame', methods: ['GET'])]
+    public function blame(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('blame/index.html.twig');
     }
 }
