@@ -3913,16 +3913,16 @@
         },
         {
             "name": "symfony/form",
-            "version": "v6.0.13",
+            "version": "v6.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/form.git",
-                "reference": "3cfc51bab24f3afd2757b615b150a3d337c64d8f"
+                "reference": "1ff4439b8f55d91c0982583c15d339c08abf1e63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/form/zipball/3cfc51bab24f3afd2757b615b150a3d337c64d8f",
-                "reference": "3cfc51bab24f3afd2757b615b150a3d337c64d8f",
+                "url": "https://api.github.com/repos/symfony/form/zipball/1ff4439b8f55d91c0982583c15d339c08abf1e63",
+                "reference": "1ff4439b8f55d91c0982583c15d339c08abf1e63",
                 "shasum": ""
             },
             "require": {
@@ -3950,7 +3950,7 @@
                 "symfony/twig-bridge": "<5.4"
             },
             "require-dev": {
-                "doctrine/collections": "~1.0",
+                "doctrine/collections": "^1.0|^2.0",
                 "symfony/config": "^5.4|^6.0",
                 "symfony/console": "^5.4|^6.0",
                 "symfony/dependency-injection": "^5.4|^6.0",
@@ -3995,7 +3995,7 @@
             "description": "Allows to easily create, process and reuse HTML forms",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/form/tree/v6.0.13"
+                "source": "https://github.com/symfony/form/tree/v6.0.16"
             },
             "funding": [
                 {
@@ -4011,7 +4011,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-09-09T09:33:56+00:00"
+            "time": "2022-11-28T12:25:56+00:00"
         },
         {
             "name": "symfony/framework-bundle",
