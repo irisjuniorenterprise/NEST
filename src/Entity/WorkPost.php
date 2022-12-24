@@ -20,7 +20,7 @@ class WorkPost
 
     #[ORM\OneToOne(inversedBy: 'workPost', targetEntity: EngagementPost::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['library:read'])]
+
     private $engagementPost;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'workPosts')]
@@ -35,7 +35,7 @@ class WorkPost
     private $meeting;
 
     #[ORM\OneToOne(mappedBy: 'workPost', targetEntity: Workshop::class, cascade: ['persist', 'remove'])]
-    #[Groups(['post:read'])]
+
     private $workshop;
 
     public function __construct()
