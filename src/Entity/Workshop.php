@@ -18,7 +18,7 @@ class Workshop
 
     #[ORM\OneToOne(inversedBy: 'workshop', targetEntity: WorkPost::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['library:read'])]
+
     private $workPost;
 
     #[ORM\OneToOne(mappedBy: 'workshop', targetEntity: BiblioIRIS::class, cascade: ['persist', 'remove'])]

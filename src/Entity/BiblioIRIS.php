@@ -26,7 +26,7 @@ class BiblioIRIS
     private $files = [];
 
     #[ORM\OneToOne(inversedBy: 'biblioIRIS', targetEntity: Workshop::class, cascade: ['persist', 'remove'])]
-    #[Groups(['library:read'])]
+
     private $workshop;
 
     #[ORM\OneToOne(inversedBy: 'biblioIRIS', targetEntity: Training::class, cascade: ['persist', 'remove'])]

@@ -42,7 +42,7 @@ class EngagementPost
 
     #[ORM\OneToOne(inversedBy: 'engagementPost', targetEntity: Post::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['library:read'])]
+
     private $post;
 
     #[ORM\OneToMany(mappedBy: 'engagementPost', targetEntity: Attendance::class)]
