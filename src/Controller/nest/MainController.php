@@ -34,10 +34,10 @@ class MainController extends AbstractController
         return $this->render('main/index.html.twig');
     }
 
-    #[Route('/blame', name: 'app_blame', methods: ['GET'])]
+    #[Route('/blames', name: 'app_blame', methods: ['GET'])]
     public function blame(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        return $this->render('blame/index.html.twig');
+        return $this->render('blames/index.html.twig');
     }
 }

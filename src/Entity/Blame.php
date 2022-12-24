@@ -17,11 +17,11 @@ class Blame
     private $id;
 
     #[ORM\Column(type: 'datetime')]
-    #[Groups(['blame:read'])]
+    #[Groups(['blames:read'])]
     private $date;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['blame:read'])]
+    #[Groups(['blames:read'])]
     private $reason;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'blames')]
