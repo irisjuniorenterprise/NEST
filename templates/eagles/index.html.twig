@@ -84,10 +84,9 @@
                                         <th>Last name </th>
                                         <th>Email </th>
                                         <th>Phone</th>
-                                        <th>Birthday </th>
                                         <th>University </th>
-                                        <th>Study field </th>
                                         <th>Department</th>
+                                        <th>actions</th>
 
 
                                     </tr>
@@ -101,10 +100,9 @@
                                         <td>{{eagle.lname}}</td>
                                         <td>{{ eagle.email }}</td>
                                         <td>{{ eagle.phone }}</td>
-                                        <td>{{ eagle.birthday | date('j F Y ') }}</td>
                                         <td>{{ eagle.university.name}}</td>
-                                        <td>{{ eagle.studyField.field }}</td>
                                         <td>{{ eagle.department.name }}</td>
+
 
                                         <td>
                                             <div class="dropdown">
@@ -125,12 +123,13 @@
                                     <tfoot>
                                     <tr>
                                         <th></th>
-                                        <th>Name</th>
-                                        <th>Email</th>
+                                        <th>First name </th>
+                                        <th>Last name </th>
+                                        <th>Email </th>
+                                        <th>Phone</th>
+                                        <th>University </th>
                                         <th>Department</th>
-                                        <th>Reason</th>
-                                        <th>Date</th>
-                                        <th>Actions</th>
+                                        <th>actions</th>
                                     </tr>
                                     </tfoot>
                                 </table>
