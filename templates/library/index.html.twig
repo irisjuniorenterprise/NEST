@@ -20,7 +20,11 @@
                             <div class="card-header border-bottom">
                                 <h4 class="card-title">Advanced Search</h4>
                                 <button class="btn btn-outline-primary" data-bs-toggle="modal"
-                                        data-bs-target="#modals-slide-in">Add Blame</button>
+                                <<<<<<< HEAD
+                                data-bs-target="#modals-slide-in">Add Blame</button>
+                                =======
+                                data-bs-target="#modals-slide-in">Add Resource</button>
+                                >>>>>>> feature/libraryKaka
                             </div>
                             <!--Search Form -->
                             <div class="card-body mt-2">
@@ -78,45 +82,48 @@
                             <div class="card-datatable">
                                 <table class="dt-advanced-search table">
                                     <thead>
-
                                     <tr>
-
                                         <th></th>
                                         <th>workshop</th>
                                         <th>training</th>
                                         <th>posted_by</th>
                                         <th>content</th>
                                         <th>files</th>
-                                        <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for resource in resources %}
                                         {{ dump(resource.workshop) }}
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td>test@test.com</td>
-                                        <td>IT</td>
-                                        <td>{{resource.content}}</td>
-
-                                        <td>{%for file in resource.files %}{{ file }},{% endfor %}</td>
-
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                                        data-bs-toggle="dropdown">
-                                                    <i data-feather="more-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">
-                                                        <i data-feather="trash" class="me-50"></i>
-                                                        <span>Delete</span>
-                                                    </a>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>test@test.com</td>
+                                            <td>IT</td>
+                                            <td>{{ resource.content }}</td>
+                                            <td>{% for file in resource.files %}{{ file }},{% endfor %}</td>
+                                        <tr>
+                                            <td></td>
+                                            <td>Alaric Beslier</td>
+                                            <td>test@test.com</td>
+                                            <td>IT</td>
+                                            <td>ANJ</td>
+                                            <td>2019-01-01</td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button"
+                                                            class="btn btn-sm dropdown-toggle hide-arrow py-0"
+                                                            data-bs-toggle="dropdown">
+                                                        <i data-feather="more-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item" href="#">
+                                                            <i data-feather="trash" class="me-50"></i>
+                                                            <span>Delete</span>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
                                     {% endfor %}
                                     <tfoot>
                                     <tr>
@@ -126,8 +133,6 @@
                                         <th>posted_by</th>
                                         <th>content</th>
                                         <th>files</th>
-                                        <th>Actions</th>
-                                    </tr>
                                     </tfoot>
                                 </table>
                             </div>
@@ -137,45 +142,20 @@
                 <!-- Modal to add new record -->
                 <div class="modal modal-slide-in fade" id="modals-slide-in">
                     <div class="modal-dialog sidebar-sm">
-                        <form class="add-new-record modal-content pt-0">
+                        <div class="add-new-record modal-content pt-0">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×
                             </button>
                             <div class="modal-header mb-1">
                                 <h5 class="modal-title" id="exampleModalLabel">New Record</h5>
                             </div>
                             <div class="modal-body flex-grow-1">
-                                <div class="mb-1">
-                                    <label class="form-label" for="basic-icon-default-fullname">Full Name</label>
-                                    <input type="text" class="form-control dt-full-name"
-                                           id="basic-icon-default-fullname" placeholder="John Doe"
-                                           aria-label="John Doe"/>
-                                </div>
-                                <div class="mb-1">
-                                    <label class="form-label" for="basic-icon-default-post">Post</label>
-                                    <input type="text" id="basic-icon-default-post" class="form-control dt-post"
-                                           placeholder="Web Developer" aria-label="Web Developer"/>
-                                </div>
-                                <div class="mb-1">
-                                    <label class="form-label" for="basic-icon-default-email">Email</label>
-                                    <input type="text" id="basic-icon-default-email" class="form-control dt-email"
-                                           placeholder="john.doe@example.com" aria-label="john.doe@example.com"/>
-                                    <small class="form-text"> You can use letters, numbers & periods </small>
-                                </div>
-                                <div class="mb-1">
-                                    <label class="form-label" for="basic-icon-default-date">Joining Date</label>
-                                    <input type="text" class="form-control dt-date" id="basic-icon-default-date"
-                                           placeholder="MM/DD/YYYY" aria-label="MM/DD/YYYY"/>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label" for="basic-icon-default-salary">Salary</label>
-                                    <input type="text" id="basic-icon-default-salary" class="form-control dt-salary"
-                                           placeholder="$12000" aria-label="$12000"/>
-                                </div>
-                                <button type="button" class="btn btn-primary data-submit me-1">Submit</button>
-                                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel
-                                </button>
+                                {{ form_start(libraryForm,{'attr':{'action':path('app_library_new')}}) }}
+                                {{ form_widget(libraryForm) }}
+                                <input type="submit" style="display: inline!important;"
+                                       class="btn btn-primary data-submit me-1">
+                                {{ form_end(libraryForm) }}
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </section>
