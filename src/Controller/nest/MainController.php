@@ -32,5 +32,4 @@ class MainController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('main/index.html.twig');
-    }
-}
+    }}

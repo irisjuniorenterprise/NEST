@@ -24,7 +24,7 @@ class Blame
     #[Groups(['blames:read'])]
     private $reason;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'blames')]
+    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER', inversedBy: 'blames')]
     #[ORM\JoinColumn(nullable: false)]
     private $eagle;
 

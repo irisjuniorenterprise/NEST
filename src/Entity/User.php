@@ -66,7 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'eagle', targetEntity: Order::class)]
     private $orders;
 
-    #[ORM\ManyToOne(targetEntity: Department::class, inversedBy: 'eagles')]
+    #[ORM\ManyToOne(targetEntity: Department::class, fetch: 'EAGER', inversedBy: 'eagles')]
     #[Groups(['list:read'])]
     private $department;
 

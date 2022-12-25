@@ -2,6 +2,7 @@
 
 namespace App\Controller\nest;
 
+use App\Repository\BlameRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,4 +17,20 @@ class UserController extends AbstractController
             'eagles' => $userRepository->findAll(),
         ]);
     }
+    #[Route('/blame', name: 'app_blames')]
+    public function blameList(BlameRepository $blameRepository ): Response
+    {
+        $userRole=$this->getUser()->getRoles()[0];
+        $department=explode('_',$userRole)[1];
+        if ($userRole==='ROLE_HR' || $userRole==='ROLE_VP' || $userRole==='ROLE_PRESIDENT' ){
+            $blames=$blameRepository->findAll();
+        }
+        else{
+            $blames=$blameRepository->findByAdminRole($department);
+        }
+        return $this->render('blame/index.html.twig', [
+            'blames' => $blames
+        ]);
+    }
+
 }

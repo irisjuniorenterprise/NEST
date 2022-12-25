@@ -74,28 +74,27 @@
                                     </div>
                                 </form>
                             </div>
+
                             <hr class="my-0"/>
                             <div class="card-datatable">
                                 <table class="dt-advanced-search table">
                                     <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Department</th>
-                                        <th>Reason</th>
-                                        <th>Date</th>
-                                        <th>Actions</th>
+                                        <th>eagle</th>
+                                        <th>reason</th>
+                                        <th>date</th>
+                                        <th>actions</th>
+
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    {% for blame in blames %}
                                     <tr>
                                         <td></td>
-                                        <td>Alaric Beslier</td>
-                                        <td>test@test.com</td>
-                                        <td>IT</td>
-                                        <td>ANJ</td>
-                                        <td>2019-01-01</td>
+                                        <td>{{ blame.eagle.fname }}</td>
+                                        <td>{{ blame.reason }}</td>
+                                        <td>{{ blame.date | date("j F Y") }}</td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
@@ -111,15 +110,16 @@
                                             </div>
                                         </td>
                                     </tr>
+
+                                    {% endfor %}
+                                    </tbody>
                                     <tfoot>
                                     <tr>
                                         <th></th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Department</th>
-                                        <th>Reason</th>
-                                        <th>Date</th>
-                                        <th>Actions</th>
+                                        <th>eagle</th>
+                                        <th>reason</th>
+                                        <th>date</th>
+                                        <th>actions</th>
                                     </tr>
                                     </tfoot>
                                 </table>

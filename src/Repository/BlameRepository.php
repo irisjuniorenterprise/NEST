@@ -50,19 +50,20 @@ class BlameRepository extends ServiceEntityRepository
     // /**
     //  * @return Blame[] Returns an array of Blame objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByAdminRole($value)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
+            ->join('b.eagle','u')
+            ->join('u.department','d')
+            ->where('d.name = :val')
             ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('b.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Blame
