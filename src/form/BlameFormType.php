@@ -21,17 +21,10 @@ class BlameFormType extends AbstractType
                 'required' => true,
                 'placeholder'=>'choose eagle'
             ])
-            ->add('date', DateType::class, [
-                'widget' => 'single_text',
-                'required' => true
-            ])
             ->add('reason', TextareaType::class,[
                     'required'=>true,
-
                 ]
             );
-
-
     }
 
 }

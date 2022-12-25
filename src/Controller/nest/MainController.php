@@ -33,11 +33,4 @@ class MainController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('main/index.html.twig');
     }
-
-    #[Route('/blames', name: 'app_blame', methods: ['GET'])]
-    public function blame(): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        return $this->render('blames/index.html.twig');
-    }
 }

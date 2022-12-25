@@ -6,6 +6,7 @@ use App\Entity\Blame;
 
 use App\form\BlameFormType;
 use App\Repository\BlameRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,8 +20,6 @@ class BlameController extends AbstractController
     public function index(BlameRepository $blameRepository): Response
     {
         $form = $this->createForm(BlameFormType::class);
-
-
         return $this->renderForm('blame/index.html.twig', [
             'blames' => $blameRepository->findAll(),
             'blameForm' => $form,
@@ -32,22 +31,25 @@ class BlameController extends AbstractController
      * @throws ORMException
      */
     #[Route('/blame/new', name: 'app_blame_new')]
-    public function new(BlameRepository $blameRepository, Request $request)
+    public function new(BlameRepository $blameRepository, Request $request, UserRepository $userRepository):Response
     {
         $form = $this->createForm(BlameFormType::class);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            $eagleBlamed = $userRepository->find($data['eagle']);
             $blame =new blame();
-            $blame->setEagle($this->getUser());
+            $blame->setEagle($eagleBlamed);
             $blame->setDate(new \DateTime());
             $blame->setReason($data['reason']);
             $blameRepository->add($blame,true);
+            $this->addFlash('success', 'Blame added');
             return $this->redirectToRoute('app_blame');
-
-
         }
+        return $this->renderForm('blame/index.html.twig', [
+            'blames' => $blameRepository->findAll(),
+            'blameForm' => $form,
+        ]);
     }
 
     /**
@@ -63,12 +65,7 @@ class BlameController extends AbstractController
             'blame_deleted'=> true ,
             'blame_added'=> false ,
         ]);
-
-
     }
-
-
-
 
 }
 

@@ -15,13 +15,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class LibraryController extends AbstractController
 {
     #[Route('/library', name: 'app_library')]
-    public function index(): Response
+    public function index(BiblioIRISRepository $biblioIRISRepository): Response
     {
         $form = $this->createForm(LibraryFormType::class);
         return $this->renderForm('library/index.html.twig',
             [
                 'libraryForm' => $form,
-                'user' => $this->getUser()
+                'user' => $this->getUser(),
+                'resources' => $biblioIRISRepository->findAll(),
             ]
         );
     }

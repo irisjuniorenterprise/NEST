@@ -11,6 +11,9 @@
 {{ include('partials/_sidebar.html.twig') }}
 <div class="app-content content ">
     <div class="content-wrapper container-xxl p-0">
+        {% for flash in app.flashes('success') %}
+            <div class="alert alert-success">{{ flash }}</div>
+        {% endfor %}
         <div class="content-body">
             <!-- Advanced Search -->
             <section id="advanced-search-datatable">

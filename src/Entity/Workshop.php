@@ -16,7 +16,7 @@ class Workshop
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\OneToOne(inversedBy: 'workshop', targetEntity: WorkPost::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'workshop', targetEntity: WorkPost::class, cascade: ['persist', 'remove'],fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
 
     private $workPost;
