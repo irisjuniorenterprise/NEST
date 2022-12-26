@@ -2,6 +2,7 @@
 
 namespace App\Controller\nest;
 
+use App\Entity\Article;
 use App\Repository\BiblioIRISRepository;
 use App\Entity\BiblioIRIS;
 use App\form\LibraryFormType;
@@ -66,5 +67,26 @@ class LibraryController extends AbstractController
         $library=$biblioIRISRepository->find($id);
         $biblioIRISRepository->remove($library,true);
         return $this->redirectToRoute('app_library');
+    }
+    #[Route('/library/update/{id}', name: 'app_library_update')]
+    public function update(Request $request,BiblioIRISRepository $biblioIRISRepository, BiblioIRIS $biblioIRIS): Response
+    {
+        $form = $this->createForm(LibraryFormType::class,$biblioIRIS);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $biblioIRISRepository->persist($biblioIRIS);
+            $biblioIRISRepository->flush();
+            $this->addFlash('success','Article updated');
+
+            return $this->redirectToRoute('app_library',['id'=>$biblioIRIS->getId()]);
+        }
+        return $this->renderForm('library/index.html.twig',
+            [
+                'libraryForm' => $form,
+                'user' => $this->getUser()
+            ]
+        );
+
     }
 }

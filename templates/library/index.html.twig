@@ -105,6 +105,11 @@
                                                         <i data-feather="more-vertical"></i>
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item" href="{{ path('app_library_update',{id:resource.id}) }}" data-bs-toggle="modal"
+                                                           data-bs-target="#modals-slide-in">
+                                                            <i data-feather="edit-2" class="me-50"></i>
+                                                            <span>Edit</span>
+                                                        </a>
                                                         <a class="dropdown-item" href="{{ path('app_library_delete',{id:resource.id}) }}">
                                                             <i data-feather="trash" class="me-50"></i>
                                                             <span>Delete</span>
