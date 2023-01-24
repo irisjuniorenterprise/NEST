@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AnnouncementstController!{% endblock %}
+
+{% block body %}
+
+<body>
+<table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th scope="col">Content</th>
+                            <th scope="col">Files</th>
+                            <th scope="col">Imgs</th>
+                            <th scope="col">Post</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for announcement in announcements  %}
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>{{announcement.Content}}</td>
+                            <td> {{announcement.Files}}</td>
+                             <td>{{announcement.Imgs}}</td>
+                            <td> {{announcement.Post}}</td>
+                
+                        </tr>
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
+</body>
+                            
+{% endblock %}

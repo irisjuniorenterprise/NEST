@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello WorkshopsController!{% endblock %}
+
+{% block body %}
+
+<body>
+<table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Work-post</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for workshop in workshops  %}
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>{{workshop.Date}}</td>
+                            <td> {{workshop.Department}}</td>
+                             <td>{{workshop.Work-post}}</td>
+                
+                        </tr>
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
+</body>
+                            
+{% endblock %}

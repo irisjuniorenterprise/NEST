@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+
+<body>
+<table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">publish_date</th>
+                            <th scope="col">comments</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for post in posts  %}
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>{{post.Name}}</td>
+                            <td> {{post.Department}}</td>
+                             <td>{{post.publish_date}}</td>
+                            <td> {{post.comments}}</td>
+                
+                        </tr>
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
+</body>
+                            
+{% endblock %}

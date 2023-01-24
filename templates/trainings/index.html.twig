@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TrainingController!{% endblock %}
+
+{% block body %}
+
+<body>
+<table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Trainer</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for training in trainigs  %}
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>{{training.Name}}</td>
+                            <td> {{training.Department}}</td>
+                             <td>{{training.Date}}</td>
+                            <td> {{training.Trainer}}</td>
+                
+                        </tr>
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
+</body>
+                            
+{% endblock %}
