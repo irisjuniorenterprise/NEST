@@ -1,0 +1,63 @@
+<table class="dt-advanced-search table">
+    <thead>
+    <tr>
+        <th></th>
+        <th>workshop</th>
+        <th>training</th>
+        <th>posted_by</th>
+        <th>content</th>
+        <th>files</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for resource in resources %}
+        <tr>
+            <td></td>
+            <td>{% if resource.workshop != null %}{{ resource.workshop.workPost.engagementPost.post.name }}{% else %}-{% endif %}</td>
+            <td>{% if resource.training != null %}{{ resource.training.engagementPost.post.name }}{% else %}-{% endif %}</td>
+            <td>{% if resource.postedBy != null %}{{ resource.postedBy.fName }} {{ resource.postedBy.lName }}{% else %}-{% endif %}</td>
+            <td>{{ resource.content }}</td>
+            <td>{% for file in resource.files %}<a target="_blank" href="{{ file }}">{{ file }}</a> | {% endfor %}</td>
+            <td>
+                <div class="dropdown">
+                    <button type="button"
+                            class="btn btn-sm dropdown-toggle hide-arrow py-0"
+                            data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item"
+                                {{ stimulus_controller('edit-item',{
+                                    'url': path('app_library_update', {'id': resource.id, 'ajax': 1})
+                                }) }}
+                           data-action="click->edit-item#openEditModal"
+                        >
+                            <i class="fa-solid fa-pen"></i>
+                            <span>Update</span>
+                        </a>
+                        <a class="dropdown-item"
+                                {{ stimulus_controller('delete-item',{
+                                    'url': path('app_library_delete', {'id': resource.id})
+                                }) }}
+                           data-action="click->delete-item#deleteItem">
+                            <i class="fa-solid fa-trash"></i>
+                            <span>Delete</span>
+                        </a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    <tfoot>
+    <tr>
+        <th></th>
+        <th>workshop</th>
+        <th>training</th>
+        <th>posted_by</th>
+        <th>content</th>
+        <th>files</th>
+        <th>Actions</th>
+    </tfoot>
+</table>
+<div id="test"></div>

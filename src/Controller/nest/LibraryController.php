@@ -16,14 +16,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class LibraryController extends AbstractController
 {
     #[Route('/library', name: 'app_library')]
-    public function index(BiblioIRISRepository $biblioIRISRepository): Response
+    public function index(BiblioIRISRepository $biblioIRISRepository, Request $request): Response
     {
+        $template = $request->query->get('ajax') ? 'library/_table.html.twig' : 'library/index.html.twig';
         $form = $this->createForm(LibraryFormType::class);
-        return $this->renderForm('library/index.html.twig',
+        return $this->renderForm($template,
             [
                 'libraryForm' => $form,
                 'user' => $this->getUser(),
-                'resources' => $biblioIRISRepository->findAll(),
+                'resources' => $biblioIRISRepository->findBy([], ['id' => 'DESC']),
             ]
         );
     }
@@ -33,18 +34,18 @@ class LibraryController extends AbstractController
      * @throws ORMException
      */
     #[Route('/library/new', name: 'app_library_new')]
-    public function new(Request $request,BiblioIRISRepository $biblioIRISRepository): Response
+    public function new(Request $request, BiblioIRISRepository $biblioIRISRepository): Response
     {
         $form = $this->createForm(LibraryFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data=$form->getData();
-            $arrayFiles=explode(',',$data['files']);
+            $links = $_POST['links'];
+            $data = $form->getData();
             $library = new BiblioIRIS();
             $library->setContent($data['content']);
-            $library->setFiles($arrayFiles);
+            $library->setFiles($links);
             $library->setPostedBy($this->getUser());
-            $biblioIRISRepository->add($library,true);
+            $biblioIRISRepository->add($library, true);
             return $this->redirectToRoute('app_library');
 
         }
@@ -62,31 +63,54 @@ class LibraryController extends AbstractController
      * @throws ORMException
      */
     #[Route('/library/delete/{id}', name: 'app_library_delete')]
-    public function delete(BiblioIRISRepository $biblioIRISRepository,$id): Response
+    public function delete(BiblioIRISRepository $biblioIRISRepository, $id): Response
     {
-        $library=$biblioIRISRepository->find($id);
-        $biblioIRISRepository->remove($library,true);
+        $library = $biblioIRISRepository->find($id);
+        $biblioIRISRepository->remove($library, true);
         return $this->redirectToRoute('app_library');
     }
-    #[Route('/library/update/{id}', name: 'app_library_update')]
-    public function update(Request $request,BiblioIRISRepository $biblioIRISRepository, BiblioIRIS $biblioIRIS): Response
+
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    #[Route('/library/update/submit/{id}', name: 'app_library_update_submit')]
+    public function update(Request $request, BiblioIRISRepository $biblioIRISRepository, BiblioIRIS $biblioIRIS): Response
     {
-        $form = $this->createForm(LibraryFormType::class,$biblioIRIS);
+        $form = $this->createForm(LibraryFormType::class, $biblioIRIS);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $biblioIRISRepository->persist($biblioIRIS);
-            $biblioIRISRepository->flush();
-            $this->addFlash('success','Article updated');
-
-            return $this->redirectToRoute('app_library',['id'=>$biblioIRIS->getId()]);
+            $links = $_POST['links'];
+            $biblioIRIS->setFiles($links);
+            $biblioIRISRepository->add($biblioIRIS, true);
+            if ($request->isXmlHttpRequest()) {
+                return new Response(null, 204);
+            }
+            return $this->redirectToRoute('app_library');
         }
-        return $this->renderForm('library/index.html.twig',
+        $template = $request->isXmlHttpRequest() ? '_modal.edit.html.twig' : 'library/index.html.twig';
+        return $this->renderForm($template,
             [
-                'libraryForm' => $form,
-                'user' => $this->getUser()
+                'form' => $form,
+                'modalTitle' => 'Edit resource',
+                'routeName' => 'app_library',
+            ], new Response(null, $form->isSubmitted() ? 422 : 200));
+
+    }
+
+    #[Route('/library/update/{id}', name: 'app_library_update')]
+    public function edit(BiblioIRIS $biblioIRIS, Request $request): Response
+    {
+        $form = $this->createForm(LibraryFormType::class, $biblioIRIS);
+        $template = $request->query->get('ajax') ? '_modal.edit.html.twig' : 'library/index.html.twig';
+        return $this->renderForm($template,
+            [
+                'form' => $form,
+                'modalTitle' => 'Edit resource',
+                'routeName' => 'app_library_update_submit',
+                'id' => $biblioIRIS->getId(),
+                'links' => $biblioIRIS->getFiles(),
             ]
         );
-
     }
 }

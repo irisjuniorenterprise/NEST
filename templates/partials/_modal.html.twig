@@ -1,0 +1,23 @@
+<div
+
+        class="modal modal-slide-in fade" id="modals-slide-in">
+    <div class="modal-dialog sidebar-sm">
+        <div class="add-new-record modal-content pt-0">
+
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×
+            </button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" id="exampleModalLabel">{{ modalTitle }}</h5>
+            </div>
+            <div class="modal-body flex-grow-1" {{ stimulus_controller('modal-form') }} data-modal-form-target="modalBody">
+                {{ form_start(form,{'attr':{'action':path(routeName)}}) }}
+                {{ form_widget(form) }}
+                <button style="display: inline!important;" type="submit" class="btn btn-primary data-submit me-1" data-action="modal-form#submitForm">Save</button>
+                {{ form_end(form) }}
+
+
+            </div>
+        </div>
+    </div>
+
+</div>

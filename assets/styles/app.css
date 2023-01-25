@@ -10,6 +10,3 @@
 @import "core/vertical-menu.css";
 @import "pages/authentication.css";
 @import "forms/form-validation.css";
-.modal-body button {
-    display: none;
-}

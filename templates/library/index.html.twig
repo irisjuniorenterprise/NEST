@@ -9,7 +9,12 @@
 
 {{ include('partials/_navbar.html.twig') }}
 {{ include('partials/_sidebar.html.twig') }}
-<div class="app-content content ">
+<div class="app-content content "
+        {{ stimulus_controller('reload-content',{
+            url: path('app_library', { ajax: 1 }),
+        }) }}
+     data-action="delete-item:deleted->reload-content#refreshContent modal-form:success->reload-content#refreshContent"
+>
     <div class="content-wrapper container-xxl p-0">
         <div class="content-body">
             <!-- Advanced Search -->
@@ -19,8 +24,17 @@
                         <div class="card">
                             <div class="card-header border-bottom">
                                 <h4 class="card-title">Advanced Search</h4>
-                                <button class="btn btn-outline-primary" data-bs-toggle="modal"
-                                data-bs-target="#modals-slide-in">Add Resource</button>
+                                <div {{ stimulus_controller('modal-form') }}
+                                        data-action="hidden.bs.modal->modal-form#modalHidden">
+                                    <button class="btn btn-outline-primary" data-action="modal-form#openModal">Add
+                                        Resource
+                                    </button>
+                                    {{ include('_modal.html.twig',{
+                                        form: libraryForm,
+                                        modalTitle: 'New Resource',
+                                        routeName:'app_library_new',
+                                    }) }}
+                                </div>
                             </div>
                             <!--Search Form -->
                             <div class="card-body mt-2">
@@ -75,80 +89,8 @@
                                 </form>
                             </div>
                             <hr class="my-0"/>
-                            <div class="card-datatable">
-                                <table class="dt-advanced-search table">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>workshop</th>
-                                        <th>training</th>
-                                        <th>posted_by</th>
-                                        <th>content</th>
-                                        <th>files</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for resource in resources %}
-                                        <tr>
-                                            <td></td>
-                                            <td>{% if resource.workshop != null %}{{ resource.workshop.workPost.engagementPost.post.name }}{% else %}-{% endif %}</td>
-                                            <td>{% if resource.training != null %}{{ resource.training.engagementPost.post.name }}{% else %}-{% endif %}</td>
-                                            <td>{% if resource.postedBy != null %}{{ resource.postedBy.fName }} {{ resource.postedBy.lName }}{% else %}-{% endif %}</td>
-                                            <td>{{ resource.content }}</td>
-                                            <td>{% for file in resource.files %}{{ file }},{% endfor %}</td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button type="button"
-                                                            class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                                            data-bs-toggle="dropdown">
-                                                        <i data-feather="more-vertical"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="{{ path('app_library_update',{id:resource.id}) }}" data-bs-toggle="modal"
-                                                           data-bs-target="#modals-slide-in">
-                                                            <i data-feather="edit-2" class="me-50"></i>
-                                                            <span>Edit</span>
-                                                        </a>
-                                                        <a class="dropdown-item" href="{{ path('app_library_delete',{id:resource.id}) }}">
-                                                            <i data-feather="trash" class="me-50"></i>
-                                                            <span>Delete</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th>workshop</th>
-                                        <th>training</th>
-                                        <th>posted_by</th>
-                                        <th>content</th>
-                                        <th>files</th>
-                                        <th>Actions</th>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal to add new record -->
-                <div class="modal modal-slide-in fade" id="modals-slide-in">
-                    <div class="modal-dialog sidebar-sm">
-                        <div class="add-new-record modal-content pt-0">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×
-                            </button>
-                            <div class="modal-header mb-1">
-                                <h5 class="modal-title" id="exampleModalLabel">New Record</h5>
-                            </div>
-                            <div class="modal-body flex-grow-1">
-                                {{ form_start(libraryForm,{'attr':{'action':path('app_library_new')}}) }}
-                                {{ form_widget(libraryForm) }}
-                                <input type="submit" style="display: inline!important;"
-                                       class="btn btn-primary data-submit me-1">
-                                {{ form_end(libraryForm) }}
+                            <div class="card-datatable" data-reload-content-target="content">
+                                {{ include('library/_table.html.twig') }}
                             </div>
                         </div>
                     </div>
@@ -161,6 +103,32 @@
 
 <div class="sidenav-overlay"></div>
 <div class="drag-target"></div>
+<script>
+    const addItemButton = document.getElementById("addItemButton");
+    const formGroupTemplate = document.getElementById("formGroupTemplate");
+    const removeItemButton = document.getElementById("removeItemButton");
 
+    addItemButton.addEventListener("click", function () {
+        // Clone the form group template and append it to the form group
+        const formGroup = formGroupTemplate.cloneNode(true);
+        formGroup.removeAttribute("id");
+        formGroup.classList.remove("d-none");
+        const inputs = formGroup.querySelectorAll("input");
+        inputs.forEach(function (input) {
+                input.value = "";
+            }
+        );
+        formGroupTemplate.parentNode.appendChild(formGroup);
+
+    });
+    // remove item from form group
+    removeItemButton.addEventListener("click", function () {
+        // check if there is more than one form group
+        if (formGroupTemplate.parentNode.childElementCount > 1) {
+            // remove the last form group
+            formGroupTemplate.parentNode.removeChild(formGroupTemplate.parentNode.lastElementChild);
+        }
+    });
+</script>
 {{ include('partials/_footer.html.twig') }}
 {% endblock %}

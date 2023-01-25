@@ -9,7 +9,14 @@
 
 {{ include('partials/_navbar.html.twig') }}
 {{ include('partials/_sidebar.html.twig') }}
-<div class="app-content content ">
+<div
+        class="app-content content"
+        {{ stimulus_controller('reload-content',{
+            url: path('app_blame', { ajax: 1 }),
+        }) }}
+        {#data-action="modal-form:success->reload-content#refreshContent"#}
+        data-action="delete-item:deleted->reload-content#refreshContent modal-form:success->reload-content#refreshContent"
+>
     <div class="content-wrapper container-xxl p-0">
         <div class="content-body">
             <!-- Advanced Search -->
@@ -19,8 +26,15 @@
                         <div class="card">
                             <div class="card-header border-bottom">
                                 <h4 class="card-title">Advanced Search</h4>
-                                <button class="btn btn-outline-primary" data-bs-toggle="modal"
-                                        data-bs-target="#modals-slide-in">Add Blame</button>
+                                <div {{ stimulus_controller('modal-form') }} data-action="hidden.bs.modal->modal-form#modalHidden">
+                                    <button class="btn btn-outline-primary" data-action="modal-form#openModal" {#data-bs-toggle="modal" data-bs-target="#addNewCard"#}>Add Blame
+                                    </button>
+                                    {{ include('_modal.html.twig',{
+                                        form: blameForm,
+                                        modalTitle: 'New Blame',
+                                        routeName:'app_blame_new'
+                                    }) }}
+                                </div>
                             </div>
                             <!--Search Form -->
                             <div class="card-body mt-2">
@@ -76,79 +90,18 @@
                             </div>
 
                             <hr class="my-0"/>
-                            <div class="card-datatable">
-                                <table class="dt-advanced-search table">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>eagle</th>
-                                        <th>reason</th>
-                                        <th>date</th>
-                                        <th>actions</th>
-
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for blame in blames %}
-                                    <tr>
-                                        <td></td>
-                                        <td>{{ blame.eagle.fname }}</td>
-                                        <td>{{ blame.reason }}</td>
-                                        <td>{{ blame.date | date("j F Y") }}</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                                        data-bs-toggle="dropdown">
-                                                    <i data-feather="more-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">
-                                                        <i data-feather="trash" class="me-50"></i>
-                                                        <span>Delete</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    {% endfor %}
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th>eagle</th>
-                                        <th>reason</th>
-                                        <th>date</th>
-                                        <th>actions</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
+                            <div class="card-datatable" data-reload-content-target="content">
+                                {{ include('partials/_table.html.twig') }}
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Modal to add new record -->
-                <div class="modal modal-slide-in fade" id="modals-slide-in">
-                    <div class="modal-dialog sidebar-sm">
-                        <div class="add-new-record modal-content pt-0">
-
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×
-                            </button>
-                            <div class="modal-header mb-1">
-                                <h5 class="modal-title" id="exampleModalLabel">New Record</h5>
-                            </div>
-                            <div class="modal-body flex-grow-1">
-                                {{ form_start(blameForm,{'attr':{'action':path('app_blame_new')}}) }}
-                                {{ form_widget(blameForm) }}
-                                <input style="display: inline!important;" type="submit" class="btn btn-primary data-submit me-1">
-                                {{ form_end(blameForm) }}
-
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                {#<!-- Modal to add new record -->
+                {{ include('partials/_modal.html.twig',{
+                    modalTitle:'New Blame',
+                    routeName:'app_blame_new',
+                    form:blameForm
+                }) }}#}
             </section>
             <!--/ Advanced Search -->
         </div>

@@ -12,7 +12,6 @@ class LibraryFormType extends AbstractType
     {
         $builder
             ->add('content', TextareaType::class)
-            ->add('files')
         ;
     }
 }
