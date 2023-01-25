@@ -1,0 +1,62 @@
+<table class="dt-advanced-search table">
+    <thead>
+    <tr>
+        <th></th>
+        <th>eagle</th>
+        <th>reason</th>
+        <th>date</th>
+        <th>actions</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for blame in blames %}
+        <tr>
+            <td></td>
+            <td>{{ blame.eagle.fname }}</td>
+            <td>{{ blame.reason }}</td>
+            <td>{{ blame.date | date("j F Y") }}</td>
+            <td>
+                <div class="dropdown">
+                    <button type="button"
+                            class="btn btn-sm dropdown-toggle hide-arrow py-0"
+                            data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item"
+                                {{ stimulus_controller('delete-item',{
+                                    'url': path('app_blame_delete', {'id': blame.id})
+                                }) }}
+                           data-action="click->delete-item#deleteItem"
+                        >
+                            <i class="fa-solid fa-trash"></i>
+                            <span>Delete</span>
+                        </a>
+                        <a class="dropdown-item"
+                                {{ stimulus_controller('edit-item',{
+                                    'url': path('app_blame_update', {'id': blame.id, 'ajax': 1})
+                                }) }}
+                           data-action="click->edit-item#openEditModal"
+                        >
+                            <i class="fa-solid fa-pen"></i>
+                            <span>Update</span>
+                        </a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <th></th>
+        <th>eagle</th>
+        <th>reason</th>
+        <th>date</th>
+        <th>actions</th>
+    </tr>
+    </tfoot>
+</table>
+<div id="test"></div>

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="container">
+    {{ form_start(blameForm,{'attr':{'action':path('app_blame_new')}}) }}
+    {{ form_widget(blameForm) }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+    {{ form_end(blameForm) }}
+</div>
+{% endblock %}

@@ -4,7 +4,7 @@
         data-target="modal"
         tabindex="-1" aria-labelledby="addNewCardTitle"
         aria-hidden="true"
-        data-modal-form-target="modal"
+        data-edit-item-target="modal"
 >
     <div data-target="modal" class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -19,18 +19,24 @@
                 <!-- form -->
                 <div id="addNewCardValidation" class="row gy-1 gx-2 mt-75" {{ stimulus_controller('modal-form') }}
                      data-modal-form-target="modalBody">
-                    {{ form_start(form,{'attr':{'action':path(routeName)}}) }}
+                    {{ form_start(form,{'attr':{'action':path(routeName,{'id':id})}}) }}
                     {{ form_widget(form) }}
-                    {% if modalTitle == 'New Resource' %}
+                    {% if modalTitle == 'Edit resource' %}
                         <div>
-                            <div class="form-group" id="formGroupTemplate">
-                                <label>Links</label>
-                                <input type="text" class="form-control" name="links[]">
-                            </div>
+                            <label>Links</label>
+                            {% for link in links %}
+
+                                <div class="form-group" id="formGroupTemplateEdit">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                    <input type="text" value="{{ link }}" class="form-control m-2" name="links[]">
+                                    <i style="cursor: pointer" class="fa fa-trash delete-item-button"></i>
+                                    </div>
+                                </div>
+
+                            {% endfor %}
                         </div>
                         <div class="col-12 text-center">
-                            <button type="button" class="btn btn-primary mt-2" id="addItemButton">Add Item</button>
-                            <button type="button" class="btn btn-danger mt-2" id="removeItemButton">Delete Item</button>
+                            <button type="button" class="btn btn-primary mt-2" id="addItemButtonEdit">Add Item</button>
                         </div>
                     {% endif %}
                     {{ form_end(form) }}
