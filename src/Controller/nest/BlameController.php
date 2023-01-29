@@ -110,10 +110,30 @@ class BlameController extends AbstractController
         ));
     }
 
-    #[Route('/repeat', name: 'app_repeat')]
-    public function show(): Response
+    #[Route('/workshop', name: 'app_workshop')]
+    public function workshopIndex(): Response
     {
-        dd($_POST['items']);
+        return $this->render('workshops/index.html.twig');
+    }
+    #[Route('/training', name: 'app_training')]
+    public function trainingIndex(): Response
+    {
+        return $this->render('trainings/index.html.twig');
+    }
+    #[Route('/announcement', name: 'app_announcement')]
+    public function announcementIndex(): Response
+    {
+        return $this->render('announcements/index.html.twig');
+    }
+    #[Route('/meeting', name: 'app_meeting')]
+    public function meetingIndex(): Response
+    {
+        return $this->render('meetings/index.html.twig');
+    }
+    #[Route('/poll', name: 'app_poll')]
+    public function pollIndex(): Response
+    {
+        return $this->render('polls/index.html.twig');
     }
 
 }

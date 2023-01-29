@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trainings!{% endblock %}
+{% block title %}Polls!{% endblock %}
 
 {% block body %}
 
@@ -27,7 +27,7 @@
                                 <div {{ stimulus_controller('modal-form') }}
                                         data-action="hidden.bs.modal->modal-form#modalHidden">
                                     <button class="btn btn-outline-primary" data-action="modal-form#openModal">Add
-                                        Training
+                                        Poll
                                     </button>
                                 </div>
                             </div>
@@ -89,11 +89,10 @@
                                     <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Training</th>
-                                        <th>Place</th>
-                                        <th>Dep</th>
+                                        <th>Poll</th>
+                                        <th>Target</th>
                                         <th>Date</th>
-                                        <th>Trainers</th>
+                                        <th>Options</th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
@@ -101,10 +100,9 @@
                                     <tr>
                                         <td></td>
                                         <td>PHP</td>
-                                        <td>ISB</td>
-                                        <td>IT</td>
+                                        <td>ALL</td>
                                         <td>22/2/2023</td>
-                                        <td><p>A</p><p>B</p></td>
+                                        <td><p>OPTION1</p><p>OPTION2</p></td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button"
@@ -131,11 +129,10 @@
                                     <tfoot>
                                     <tr>
                                         <th></th>
-                                        <th>Training</th>
-                                        <th>Place</th>
-                                        <th>Dep</th>
+                                        <th>Poll</th>
+                                        <th>Target</th>
                                         <th>Date</th>
-                                        <th>Trainers</th>
+                                        <th>Options</th>
                                         <th>Actions</th>
                                     </tfoot>
                                 </table>
