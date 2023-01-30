@@ -24,7 +24,7 @@ class WorkPost
     private $engagementPost;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'workPosts')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $sg;
 
     #[ORM\OneToMany(mappedBy: 'workPost', targetEntity: Agenda::class)]

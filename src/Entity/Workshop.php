@@ -25,7 +25,7 @@ class Workshop
     private $biblioIRIS;
 
     #[ORM\OneToOne(inversedBy: 'workshop', targetEntity: Form::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $satisfactionForm;
 
     public function getId(): ?int

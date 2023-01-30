@@ -1,0 +1,9 @@
+<div class="container">
+    {{ form_start(postFrom,{'attr':{'action':path('app_workshop_new')}}) }}
+    {{ form_start(engagementPosForm,{'attr':{'action':path('app_workshop_new')}}) }}
+    {{ form_widget(postFrom) }}
+    {{ form_widget(engagementPosForm) }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+    {{ form_end(postFrom) }}
+    {{ form_end(engagementPosForm) }}
+</div>
