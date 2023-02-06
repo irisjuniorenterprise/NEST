@@ -24,7 +24,7 @@ class Training
     #[Groups(['library:read'])]
     private $engagementPost;
 
-    #[ORM\ManyToMany(targetEntity: Trainer::class, mappedBy: 'Trainings')]
+    #[ORM\ManyToMany(targetEntity: Trainer::class, mappedBy: 'Trainings',cascade: ['persist'])]
     #[Groups(['post:read'])]
     private $trainers;
 
@@ -111,7 +111,7 @@ class Training
         return $this->satisfactionForm;
     }
 
-    public function setSatisfactionForm(Form $satisfactionForm): self
+    public function setSatisfactionForm(?Form $satisfactionForm): self
     {
         $this->satisfactionForm = $satisfactionForm;
 

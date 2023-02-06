@@ -26,7 +26,7 @@ class Trainer
     #[Groups(['post:read'])]
     private $lName;
 
-    #[ORM\ManyToMany(targetEntity: Training::class, inversedBy: 'trainers')]
+    #[ORM\ManyToMany(targetEntity: Training::class, inversedBy: 'trainers',cascade: ['persist', 'remove'])]
     private $Trainings;
 
     public function __construct()
@@ -86,4 +86,10 @@ class Trainer
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->fName . ' ' . $this->lName;
+    }
+
 }

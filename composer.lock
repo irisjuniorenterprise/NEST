@@ -1508,7 +1508,7 @@
             },
             "require": {
                 "laminas/laminas-code": "~3.4.1|^4.0",
-                "php": ">=7.1",
+                "php": ">=8.1",
                 "symfony/filesystem": "^4.4.17|^5.0|^6.0"
             },
             "conflict": {
@@ -1696,7 +1696,11 @@
                 "shasum": ""
             },
             "require": {
+<<<<<<< Updated upstream
                 "php": ">=7.4, <=8.2"
+=======
+                "php": ">=7.4, >8.0"
+>>>>>>> Stashed changes
             },
             "require-dev": {
                 "doctrine/annotations": "^1.13.2",

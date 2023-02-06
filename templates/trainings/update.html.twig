@@ -1,0 +1,18 @@
+<div class="container">
+    {{ form_start(postFrom,{'attr':{'action':path('app_training_update' ,{id:training.engagementPost.post.id})}}) }}
+    {{ form_start(engagementPosForm) }}
+    {{ form_widget(postFrom) }}
+    {{ form_widget(engagementPosForm) }}
+    <select name="trainers[]" id="" multiple>
+        {% for trainer in training.trainers %}
+            <option value="{{ trainer.id }}" selected>{{ trainer.fName }}</option>
+        {% endfor %}
+        {% for trainer in trainers %}
+            <option value="{{ trainer.id }}">{{ trainer.fName }}</option>
+        {% endfor %}
+
+    </select>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    {{ form_end(postFrom) }}
+    {{ form_end(engagementPosForm) }}
+</div>
