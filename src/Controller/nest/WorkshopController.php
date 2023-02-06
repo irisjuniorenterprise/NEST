@@ -37,7 +37,7 @@ class WorkshopController extends AbstractController
     {
         $postForm = $this->createForm(PostFormType::class);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class);
-        return $this->renderForm('workshops/add.html.twig',
+        return $this->renderForm('workshops/edit.html.twig',
         [
             'postFrom'=>$postForm,
             'engagementPosForm'=>$engagementPostForm

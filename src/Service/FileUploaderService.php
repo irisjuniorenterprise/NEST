@@ -2,9 +2,11 @@
 
 namespace App\Service;
 
+use App\Entity\Announcement;
 use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\Sponsor;
+use App\Repository\AnnouncementRepository;
 use App\Repository\ImageRepository;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\FileBag;
@@ -29,9 +31,8 @@ class FileUploaderService
             $imageRepository->save($image,true);
         }
         return $done;
-
-
-    } public static function uploaderImages(FileBag $files, $targetDirectory, Product|Sponsor $entity, ProductRepository $repository, ImageRepository $imageRepository) : bool
+    }
+    public static function uploaderImages(FileBag $files, $targetDirectory, Product|Sponsor $entity, ProductRepository $repository, ImageRepository $imageRepository) : bool
     {
         $i=0;
         $done=false;
@@ -53,5 +54,30 @@ class FileUploaderService
 
 
     }
+
+    public static function uploadAnnouncementImages(mixed $files, $targetDirectory, Announcement $entity, AnnouncementRepository $repository, ImageRepository $imageRepository) : bool
+    {
+        $i=0;
+        $done=false;
+        foreach ($files['name'] as $picture){
+            $imageType = pathinfo($picture,PATHINFO_EXTENSION);
+            $imageName = str_replace(' ','_','announcement').'_'.$i.uniqid('',true).".".$imageType;
+            move_uploaded_file($files['tmp_name'][$i],$targetDirectory.$imageName);
+            $image=new Image();
+
+            $image->setImageName($imageName);
+
+            if($entity instanceof Announcement){
+
+                $image->setAnnouncement($entity);
+                $done=true;
+            }
+            $i++;
+            $imageRepository->save($image,true);
+
+        }
+        return $done;
+    }
+
 
 }

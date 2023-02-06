@@ -19,6 +19,10 @@ class Image
     #[ORM\ManyToOne(inversedBy: 'images')]
     private ?Product $product = null;
 
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'images')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Announcement $announcement = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +48,18 @@ class Image
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getAnnouncement(): ?Announcement
+    {
+        return $this->announcement;
+    }
+
+    public function setAnnouncement(?Announcement $announcement): self
+    {
+        $this->announcement = $announcement;
 
         return $this;
     }
