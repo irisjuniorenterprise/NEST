@@ -1,0 +1,11 @@
+<div class="container">
+    {{ form_start(postForm,{'attr':{ 'action':path('app_announcement_new'),'role':'form','enctype':'multipart/form-data'}}) }}
+    {{ form_start(announcementForm,{'attr':{ 'action':path('app_announcement_new')}}) }}
+    {{ form_widget(postForm) }}
+    {{ form_widget(announcementForm) }}
+    <input type="file" name="announcementImages[]" multiple required>
+    <input type="submit" style="display :inline! important ; " class="btn btn-primary data-submit me-1">
+    {{ form_end(postForm) }}
+    {{ form_end(announcementForm) }}
+</div>
+

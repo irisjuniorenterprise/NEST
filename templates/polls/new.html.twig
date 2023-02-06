@@ -1,0 +1,14 @@
+<div class="container">
+    {{ form_start(postForm,{'attr':{ 'action':path('app_poll_new')}}) }}
+    {{ form_start(pollForm,{'attr':{ 'action':path('app_poll_new')}}) }}
+    {{ form_start(pollOptionForm,{'attr':{ 'action':path('app_poll_new')}}) }}
+    {{ form_widget(postForm) }}
+    {{ form_widget(pollForm) }}
+    {{ form_widget(pollOptionForm) }}
+
+    <input type="submit" style="display :inline! important ; " class="btn btn-primary data-submit me-1">
+    {{ form_end(postForm) }}
+    {{ form_end(pollForm) }}
+    {{ form_end(pollOptionForm) }}
+</div>
+

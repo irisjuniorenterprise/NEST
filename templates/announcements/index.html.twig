@@ -24,10 +24,10 @@
                         <div class="card">
                             <div class="card-header border-bottom">
                                 <h4 class="card-title">Advanced Search</h4>
-                                <div {{ stimulus_controller('modal-form') }}
+                                <div {#{{ stimulus_controller('modal-form') }}#}
                                         data-action="hidden.bs.modal->modal-form#modalHidden">
-                                    <button class="btn btn-outline-primary" data-action="modal-form#openModal">Add
-                                        Announcement
+                                    <button class="btn btn-outline-primary" data-action="modal-form#openModal"><a
+                                                href="{{ path('app_announcement_add') }}">Add Announcement</a>
                                     </button>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                                     <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Announcement</th>
+                                        <th>Name</th>
                                         <th>Target</th>
                                         <th>Content</th>
                                         <th>Images</th>
@@ -98,40 +98,50 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td>PHP</td>
-                                        <td>ALL</td>
-                                        <td>OK OK</td>
-                                        <td><p>IMAGE1</p><p>IMAGE2</p></td>
-                                        <td>22/2/2023</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button"
-                                                        class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                                        data-bs-toggle="dropdown">
-                                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item"
-                                                       data-action="click->edit-item#openEditModal"
-                                                    >
-                                                        <i class="fa-solid fa-pen"></i>
-                                                        <span>Update</span>
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                       data-action="click->delete-item#deleteItem">
-                                                        <i class="fa-solid fa-trash"></i>
-                                                        <span>Delete</span>
-                                                    </a>
+                                    {% for announcement in announcements %}
+                                        <tr>
+                                            <td></td>
+
+                                            <td>{{ announcement.post.name }}</td>
+                                            <td>All</td>
+
+
+                                            <td>{{ announcement.content }}</td>
+                                            <td>{% for image in announcement.images %}
+                                                    <img src="/uploads/announcement/{{ image.imageName }}" alt="{{ image.imageName  }} " height="100" width="100">
+                                                <a href ="{{ path('app_announcement_delete_image', { 'id':image.id}) }}" > <button type="button" class="btn-close" aria-label="Close" > </button></a>
+                                                {% endfor%}    </td>
+                                            <td>{{ announcement.post.publishDate|date() }}</td>
+
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button"
+                                                            class="btn btn-sm dropdown-toggle hide-arrow py-0"
+                                                            data-bs-toggle="dropdown">
+                                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                                    </button>
+                                                    <div  class="dropdown-menu dropdown-menu-end">
+                                                        <a href="{{path('app_announcement_update' , { 'id':announcement.post.id}) }}?announcementId={{ announcement.id }}" class="dropdown-item"
+                                                           data-action="click->edit-item#openEditModal"
+                                                        >
+                                                            <i class="fa-solid fa-pen"></i>
+                                                            <span>Update</span>
+                                                        </a>
+                                                        <a href="{{path('app_announcement_delete', { 'id':announcement.post.id} ) }}" class="dropdown-item"
+                                                           data-action="click->delete-item#deleteItem" >
+                                                            <i class="fa-solid fa-trash"></i>
+                                                            <span> Delete</span>
+                                                        </a>
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                     <tfoot>
                                     <tr>
                                         <th></th>
-                                        <th>Announcement</th>
+                                        <th>Name</th>
                                         <th>Target</th>
                                         <th>Content</th>
                                         <th>Images</th>
@@ -153,4 +163,6 @@
 <div class="sidenav-overlay"></div>
 <div class="drag-target"></div>
 {{ include('partials/_footer.html.twig') }}
+
 {% endblock %}
+
