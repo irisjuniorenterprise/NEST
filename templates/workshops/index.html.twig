@@ -99,11 +99,13 @@
                                     </thead>
                                     <tbody>
                                     <tr>
+                                        {% for workshop in workshops %}
                                         <td></td>
-                                        <td>PHP</td>
-                                        <td>ISB</td>
-                                        <td>IT</td>
-                                        <td>22/2/2023</td>
+                                        <td>{{ workshop.workPost.engagementPost.post.name }}</td>
+                                        <td>{{ workshop.workPost.engagementPost.place}}</td>
+                                            <td>IT</td>
+                                        <td>{{ workshop.workPost.engagementPost.post.publishDate|date() }}</td>
+
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button"
@@ -112,21 +114,23 @@
                                                     <i class="fa-solid fa-ellipsis-vertical"></i>
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item"
-                                                       data-action="click->edit-item#openEditModal"
-                                                    >
+                                                    <a href="{{path('app_workshop_update' , {'id':workshop.workPost.engagementPost.post.id}) }}" class="dropdown-item"
+                                                       data-action="click->edit-item#openEditModal">
                                                         <i class="fa-solid fa-pen"></i>
                                                         <span>Update</span>
                                                     </a>
-                                                    <a class="dropdown-item"
+                                                  <a  href="{{path('app_workshop_delete' , {'id':workshop.workPost.engagementPost.post.id}) }}" class="dropdown-item"
                                                        data-action="click->delete-item#deleteItem">
                                                         <i class="fa-solid fa-trash"></i>
+
                                                         <span>Delete</span>
                                                     </a>
                                                 </div>
                                             </div>
                                         </td>
+
                                     </tr>
+                                    {% endfor %}
                                     <tfoot>
                                     <tr>
                                         <th></th>

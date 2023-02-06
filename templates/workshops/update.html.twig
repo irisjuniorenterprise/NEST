@@ -1,0 +1,12 @@
+<div class="container">
+    {{ form_start(postForm,{'attr':{ 'action':path('app_workshop_update_submit' ,{id:post.id} )}}) }}
+    {{ form_start(engagementPostForm,{'attr':{ 'action':path('app_workshop_update_submit', {id:post.id})}}) }}
+    {{ form_widget(postForm) }}
+    {{ form_widget(engagementPostForm) }}
+
+
+    <input type="submit" style="display :inline! important ; " class="btn btn-primary data-submit me-1">
+    {{ form_end(postForm) }}
+    {{ form_end(engagementPostForm) }}
+
+</div>
