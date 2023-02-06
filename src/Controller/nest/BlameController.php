@@ -115,11 +115,7 @@ class BlameController extends AbstractController
     {
         return $this->render('workshops/index.html.twig');
     }
-    #[Route('/training', name: 'app_training')]
-    public function trainingIndex(): Response
-    {
-        return $this->render('trainings/index.html.twig');
-    }
+
     #[Route('/announcement', name: 'app_announcement')]
     public function announcementIndex(): Response
     {

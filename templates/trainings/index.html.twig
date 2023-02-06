@@ -10,9 +10,9 @@
 {{ include('partials/_navbar.html.twig') }}
 {{ include('partials/_sidebar.html.twig') }}
 <div class="app-content content "
-        {{ stimulus_controller('reload-content',{
+        {#{{ stimulus_controller('reload-content',{
             url: path('app_library', { ajax: 1 }),
-        }) }}
+        }) }}#}
      data-action="delete-item:deleted->reload-content#refreshContent modal-form:success->reload-content#refreshContent"
 >
     <div class="content-wrapper container-xxl p-0">
@@ -24,11 +24,10 @@
                         <div class="card">
                             <div class="card-header border-bottom">
                                 <h4 class="card-title">Advanced Search</h4>
-                                <div {{ stimulus_controller('modal-form') }}
+                                <div {#{{ stimulus_controller('modal-form') }}#}
                                         data-action="hidden.bs.modal->modal-form#modalHidden">
-                                    <button class="btn btn-outline-primary" data-action="modal-form#openModal">Add
-                                        Training
-                                    </button>
+                                    <button class="btn btn-outline-primary" data-action="modal-form#openModal"><a
+                                                href="{{ path('app_training_add') }}" target="_blank">Add Training</a></button>
                                 </div>
                             </div>
                             <!--Search Form -->
@@ -98,13 +97,14 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    {% for training in trainings %}
                                     <tr>
                                         <td></td>
-                                        <td>PHP</td>
-                                        <td>ISB</td>
-                                        <td>IT</td>
-                                        <td>22/2/2023</td>
-                                        <td><p>A</p><p>B</p></td>
+                                        <td>{{ training.engagementPost.post.name }}</td>
+                                        <td>{{ training.engagementPost.place }}</td>
+                                        <td>{% for target in training.engagementPost.post%} {{ target }} <br>{% endfor %}</td>
+                                        <td>{{ training.engagementPost.date|date("m/d/Y") }}</td>
+                                        <td>{% for fName in training.trainers %} {{ fName }} <br>{% endfor %}</td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button"
@@ -115,12 +115,15 @@
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item"
                                                        data-action="click->edit-item#openEditModal"
+                                                       href="{{ path('app_training_modify', {id:training.engagementPost.post.id}) }}"
                                                     >
                                                         <i class="fa-solid fa-pen"></i>
                                                         <span>Update</span>
                                                     </a>
                                                     <a class="dropdown-item"
-                                                       data-action="click->delete-item#deleteItem">
+                                                       data-action="click->delete-item#deleteItem"
+                                                       href="{{ path('app_training_delete', {id:training.engagementPost.post.id}) }}"
+                                                    >
                                                         <i class="fa-solid fa-trash"></i>
                                                         <span>Delete</span>
                                                     </a>
@@ -128,6 +131,7 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    {% endfor %}
                                     <tfoot>
                                     <tr>
                                         <th></th>

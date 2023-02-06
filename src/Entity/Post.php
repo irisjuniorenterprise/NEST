@@ -13,6 +13,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource]
 class Post
 {
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+        $this->departments = new ArrayCollection();
+    }
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -54,11 +60,7 @@ class Post
     #[Groups(['post:read'])]
     private $poll;
 
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
-        $this->departments = new ArrayCollection();
-    }
+
 
     public function getId(): ?int
     {
