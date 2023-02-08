@@ -1,0 +1,13 @@
+<div class="container">
+    {{ form_start(postForm,{'attr':{'action':path('app_meeting_update_submit',{id:post.id})}}) }}
+    {{ form_start(engagementPostForm,{'attr':{'action':path('app_meeting_update_submit',{id:post.id})}}) }}
+    {{ form_start(meetingForm,{'attr':{'action':path('app_meeting_update_submit',{id:post.id})}}) }}
+    {{ form_widget(postForm) }}
+    {{ form_widget(engagementPostForm) }}
+    {{ form_widget(meetingForm) }}
+    <input type="submit" class="btn btn-primary">
+    {{ form_end(postForm) }}
+    {{ form_end(engagementPostForm) }}
+    {{ form_end(meetingForm) }}
+
+</div>
