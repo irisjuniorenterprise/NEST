@@ -9,10 +9,10 @@
 
 {{ include('partials/_navbar.html.twig') }}
 {{ include('partials/_sidebar.html.twig') }}
-<div class="app-content content "
- {#       {{ stimulus_controller('reload-content',{
-            url: path('app_library', { ajax: 1 }),
-        }) }}#}
+<div class="app-content content"
+        {{ stimulus_controller('reload-content',{
+            url: path('app_workshop', { ajax: 1 }),
+        }) }}
      data-action="delete-item:deleted->reload-content#refreshContent modal-form:success->reload-content#refreshContent"
 >
     <div class="content-wrapper container-xxl p-0">
@@ -24,12 +24,17 @@
                         <div class="card">
                             <div class="card-header border-bottom">
                                 <h4 class="card-title">Advanced Search</h4>
-                                <div {#{{ stimulus_controller('modal-form') }}#}
+                                <div {{ stimulus_controller('modal-form') }}
                                         data-action="hidden.bs.modal->modal-form#modalHidden">
-                                    <button class="btn btn-outline-primary" data-action="modal-form#openModal"><a
-                                                href="{{ path('app_workshop_add') }}">Add
-                                            Workshop</a>
+                                    <button class="btn btn-outline-primary" data-action="modal-form#openModal" {#data-bs-toggle="modal" data-bs-target="#addNewCard"#}>Add Workshop
                                     </button>
+                                    {{ include('_modal.html.twig',{
+                                        form: postForm,
+                                        extraForm: engagementPostForm,
+                                        secondExtraForm: null,
+                                        modalTitle: 'New Workshop',
+                                        routeName:'app_workshop_new'
+                                    }) }}
                                 </div>
                             </div>
                             <!--Search Form -->
@@ -84,64 +89,10 @@
                                     </div>
                                 </form>
                             </div>
+
                             <hr class="my-0"/>
                             <div class="card-datatable" data-reload-content-target="content">
-                                <table class="dt-advanced-search table">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>workshop</th>
-                                        <th>Place</th>
-                                        <th>Dep</th>
-                                        <th>Date</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        {% for workshop in workshops %}
-                                        <td></td>
-                                        <td>{{ workshop.workPost.engagementPost.post.name }}</td>
-                                        <td>{{ workshop.workPost.engagementPost.place}}</td>
-                                            <td>IT</td>
-                                        <td>{{ workshop.workPost.engagementPost.post.publishDate|date() }}</td>
-
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button"
-                                                        class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                                        data-bs-toggle="dropdown">
-                                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="{{path('app_workshop_update' , {'id':workshop.workPost.engagementPost.post.id}) }}" class="dropdown-item"
-                                                       data-action="click->edit-item#openEditModal">
-                                                        <i class="fa-solid fa-pen"></i>
-                                                        <span>Update</span>
-                                                    </a>
-                                                  <a  href="{{path('app_workshop_delete' , {'id':workshop.workPost.engagementPost.post.id}) }}" class="dropdown-item"
-                                                       data-action="click->delete-item#deleteItem">
-                                                        <i class="fa-solid fa-trash"></i>
-
-                                                        <span>Delete</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                    {% endfor %}
-                                    <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th>workshop</th>
-                                        <th>Place</th>
-                                        <th>Dep</th>
-                                        <th>Date</th>
-                                        <th>Actions</th>
-                                    </tfoot>
-                                </table>
-                                <div id="test"></div>
+                                {{ include('workshops/table.html.twig') }}
                             </div>
                         </div>
                     </div>
@@ -155,4 +106,6 @@
 <div class="sidenav-overlay"></div>
 <div class="drag-target"></div>
 {{ include('partials/_footer.html.twig') }}
+
 {% endblock %}
+

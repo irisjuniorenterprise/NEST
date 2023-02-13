@@ -27,11 +27,11 @@ class Poll
     #[ORM\JoinColumn(nullable: false)]
     private $post;
 
-    #[ORM\OneToMany(mappedBy: 'poll', targetEntity: PollOption::class)]
+    #[ORM\OneToMany(mappedBy: 'poll', targetEntity: PollOption::class,cascade: ['remove'])]
     #[Groups(['post:read'])]
     private $pollOptions;
 
-    #[ORM\OneToMany(mappedBy: 'poll', targetEntity: Polling::class)]
+    #[ORM\OneToMany(mappedBy: 'poll', targetEntity: Polling::class,cascade: ['remove'])]
     private $pollings;
 
     public function __construct()

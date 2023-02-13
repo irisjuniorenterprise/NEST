@@ -13,7 +13,7 @@
     {% for blame in blames %}
         <tr>
             <td></td>
-            <td>{{ blame.eagle.fname }}</td>
+            <td>{{ blame.eagle.fName }} {{ blame.eagle.lName }}</td>
             <td>{{ blame.reason }}</td>
             <td>{{ blame.date | date("j F Y") }}</td>
             <td>

@@ -41,7 +41,7 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private $author;
 
-    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class,cascade: ['remove'])]
     #[Groups(['comments:read'])]
     private $comments;
 

@@ -94,6 +94,7 @@ class LibraryController extends AbstractController
                 'form' => $form,
                 'modalTitle' => 'Edit resource',
                 'routeName' => 'app_library',
+                'extraForm' => null,
             ], new Response(null, $form->isSubmitted() ? 422 : 200));
 
     }
@@ -108,6 +109,8 @@ class LibraryController extends AbstractController
                 'form' => $form,
                 'modalTitle' => 'Edit resource',
                 'routeName' => 'app_library_update_submit',
+                'extraForm' => null,
+                'secondExtraForm' => null,
                 'id' => $biblioIRIS->getId(),
                 'links' => $biblioIRIS->getFiles(),
             ]

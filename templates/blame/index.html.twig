@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BlameController!{% endblock %}
+{% block title %}Blame!{% endblock %}
 
 {% block body %}
 
@@ -9,13 +9,11 @@
 
 {{ include('partials/_navbar.html.twig') }}
 {{ include('partials/_sidebar.html.twig') }}
-<div
-        class="app-content content"
+<div class="app-content content"
         {{ stimulus_controller('reload-content',{
             url: path('app_blame', { ajax: 1 }),
         }) }}
-        {#data-action="modal-form:success->reload-content#refreshContent"#}
-        data-action="delete-item:deleted->reload-content#refreshContent modal-form:success->reload-content#refreshContent"
+     data-action="delete-item:deleted->reload-content#refreshContent modal-form:success->reload-content#refreshContent"
 >
     <div class="content-wrapper container-xxl p-0">
         <div class="content-body">
@@ -26,11 +24,14 @@
                         <div class="card">
                             <div class="card-header border-bottom">
                                 <h4 class="card-title">Advanced Search</h4>
-                                <div {{ stimulus_controller('modal-form') }} data-action="hidden.bs.modal->modal-form#modalHidden">
+                                <div {{ stimulus_controller('modal-form') }}
+                                        data-action="hidden.bs.modal->modal-form#modalHidden">
                                     <button class="btn btn-outline-primary" data-action="modal-form#openModal" {#data-bs-toggle="modal" data-bs-target="#addNewCard"#}>Add Blame
                                     </button>
                                     {{ include('_modal.html.twig',{
-                                        form: blameForm,
+                                        form: forms,
+                                        extraForm: null,
+                                        secondExtraForm: null,
                                         modalTitle: 'New Blame',
                                         routeName:'app_blame_new'
                                     }) }}

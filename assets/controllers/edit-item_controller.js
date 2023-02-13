@@ -26,11 +26,8 @@ export default class extends Controller {
 
     addEventListeners() {
         const addItemButton = document.getElementById("addItemButtonEdit");
-        console.log(addItemButton);
         const formGroupTemplate = document.getElementById("formGroupTemplateEdit");
-        console.log(formGroupTemplate);
         const removeItemButton = document.getElementById("removeItemButtonEdit");
-        console.log(removeItemButton);
         const deleteItemButtons = document.querySelectorAll('.delete-item-button');
         deleteItemButtons.forEach(button => {
             button.addEventListener('click', event => {
@@ -39,13 +36,10 @@ export default class extends Controller {
                     // remove the item
                     event.target.parentNode.remove();
                 }
-                // Remove the parent element of the button (which should be the container element for the item)
-                //event.target.parentElement.remove();
             });
         });
 
         addItemButton.addEventListener("click", function () {
-            console.log("add item button clicked");
             // Clone the form group template and append it to the form group and clear the inputs in the process
             const formGroup = formGroupTemplate.cloneNode(true);
             formGroup.removeAttribute("id");
@@ -57,6 +51,18 @@ export default class extends Controller {
             }
             );
             formGroupTemplate.parentNode.appendChild(formGroup);
+
+            const deleteButton = formGroup.querySelector('.delete-item-button');
+            deleteButton.addEventListener('click', event => {
+                // check if there is more than one item
+                if (formGroupTemplate.parentNode.childElementCount > 1) {
+                    // remove the item
+                    event.target.parentNode.remove();
+                } else {
+                    // show an error message or alert that the last item cannot be deleted
+                    alert("The last item cannot be deleted.");
+                }
+            });
         });
 
         removeItemButton.addEventListener("click", function () {

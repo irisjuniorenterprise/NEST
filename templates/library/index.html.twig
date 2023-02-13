@@ -31,6 +31,8 @@
                                     </button>
                                     {{ include('_modal.html.twig',{
                                         form: libraryForm,
+                                        extraForm: null,
+                                        secondExtraForm: null,
                                         modalTitle: 'New Resource',
                                         routeName:'app_library_new',
                                     }) }}

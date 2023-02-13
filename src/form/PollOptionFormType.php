@@ -12,7 +12,7 @@ class PollOptionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('value' );
+            ->add('value');
     }
 
 }

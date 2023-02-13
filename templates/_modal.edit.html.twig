@@ -20,7 +20,19 @@
                 <div id="addNewCardValidation" class="row gy-1 gx-2 mt-75" {{ stimulus_controller('modal-form') }}
                      data-modal-form-target="modalBody">
                     {{ form_start(form,{'attr':{'action':path(routeName,{'id':id})}}) }}
+                    {% if extraForm is not empty %}
+                        {{ form_start(extraForm,{'attr':{'action':path(routeName,{'id':id})}}) }}
+                    {% endif %}
+                    {% if secondExtraForm is not empty %}
+                        {{ form_start(secondExtraForm,{'attr':{'action':path(routeName,{'id':id})}}) }}
+                    {% endif %}
                     {{ form_widget(form) }}
+                    {% if extraForm is not empty %}
+                        {{ form_widget(extraForm) }}
+                    {% endif %}
+                    {% if secondExtraForm is not empty %}
+                        {{ form_widget(secondExtraForm) }}
+                    {% endif %}
                     {% if modalTitle == 'Edit resource' %}
                         <div>
                             <label>Links</label>
@@ -39,10 +51,43 @@
                             <button type="button" class="btn btn-primary mt-2" id="addItemButtonEdit">Add Item</button>
                         </div>
                     {% endif %}
+                    {% if modalTitle == 'Edit Poll' %}
+                        <div>
+                            <label>Options</label>
+                            {% for option in options %}
+
+                                <div class="form-group" id="formGroupTemplateEdit">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                    <input type="text" value="{{ option.value }}" class="form-control m-2" name="options[]">
+                                    <i style="cursor: pointer" class="fa fa-trash delete-item-button"></i>
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+                        </div>
+                        <div class="col-12 text-center">
+                            <button type="button" class="btn btn-primary mt-2" id="addItemButtonEdit">Add Item</button>
+                        </div>
+                    {% endif %}
+                    {% if modalTitle == 'Edit Announcement' %}
+                        <div class="mb-3">
+                            <label for="announcement" class="form-label">Images</label>
+                            <input class="form-control" type="file" id="announcement" name="announcement[]" multiple>
+                        </div>
+                    {% endif %}
                     {{ form_end(form) }}
+                    {% if extraForm is not empty %}
+                        {{ form_end(extraForm) }}
+                    {% endif %}
+                    {% if secondExtraForm is not empty %}
+                        {{ form_end(secondExtraForm) }}
+                    {% endif %}
 
                     <div class="col-12 text-center">
-                        <input type="submit" class="btn btn-primary me-1 mt-1" data-action="modal-form#submitForm">
+                        <button type="submit" class="btn btn-primary me-1 mt-1" data-action="modal-form#submitForm">
+                            <span id="submitButtonSpan">Submit</span>
+                            <img id="loadingButton" style="display: none" src="{{ asset('loading.gif') }}" alt="" height="20" width="20">
+                        </button>
                         <button type="reset" class="btn btn-outline-secondary mt-1" data-bs-dismiss="modal"
                                 aria-label="Close">
                             Cancel
@@ -53,4 +98,23 @@
         </div>
     </div>
 </div>
+{#<script>
+    let checkbox = document.getElementById('post_form_departments_9');
+    let inputs = document.querySelectorAll('input[type=checkbox]');
+    // remove the checkbox from the list of inputs
+    inputs = Array.prototype.filter.call(inputs, function (input) {
+        return input !== checkbox;
+    });
+
+    checkbox.addEventListener('change', function () {
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].disabled = this.checked;
+            // if the checkbox is checked, uncheck all the other inputs
+            if (this.checked) {
+                inputs[i].checked = false;
+            }
+        }
+    });
+
+</script>#}
 <!--/ add new card modal  -->

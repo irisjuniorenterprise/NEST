@@ -48,10 +48,10 @@ class EngagementPost
     #[ORM\OneToMany(mappedBy: 'engagementPost', targetEntity: Attendance::class)]
     private $attendances;
 
-    #[ORM\OneToMany(mappedBy: 'engagementPost', targetEntity: AttendanceApproval::class)]
+    #[ORM\OneToMany(mappedBy: 'engagementPost', targetEntity: AttendanceApproval::class,cascade: ['remove'])]
     private $attendanceApprovals;
 
-    #[ORM\OneToMany(mappedBy: 'engagementPost', targetEntity: AttendanceDisapproval::class)]
+    #[ORM\OneToMany(mappedBy: 'engagementPost', targetEntity: AttendanceDisapproval::class,cascade: ['remove'])]
     private $attendanceDisapprovals;
 
     #[ORM\OneToOne(mappedBy: 'engagementPost', targetEntity: WorkPost::class, cascade: ['persist', 'remove'])]

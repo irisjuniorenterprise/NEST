@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trainings!{% endblock %}
+{% block title %}Meetings!{% endblock %}
 
 {% block body %}
 
@@ -9,10 +9,10 @@
 
 {{ include('partials/_navbar.html.twig') }}
 {{ include('partials/_sidebar.html.twig') }}
-<div class="app-content content "
-        {#{{ stimulus_controller('reload-content',{
-            url: path('app_library', { ajax: 1 }),
-        }) }}#}
+<div class="app-content content"
+        {{ stimulus_controller('reload-content',{
+            url: path('app_training', { ajax: 1 }),
+        }) }}
      data-action="delete-item:deleted->reload-content#refreshContent modal-form:success->reload-content#refreshContent"
 >
     <div class="content-wrapper container-xxl p-0">
@@ -24,10 +24,17 @@
                         <div class="card">
                             <div class="card-header border-bottom">
                                 <h4 class="card-title">Advanced Search</h4>
-                                <div {#{{ stimulus_controller('modal-form') }}#}
+                                <div {{ stimulus_controller('modal-form') }}
                                         data-action="hidden.bs.modal->modal-form#modalHidden">
-                                    <button class="btn btn-outline-primary" data-action="modal-form#openModal"><a
-                                                href="{{ path('app_training_add') }}" target="_blank">Add Training</a></button>
+                                    <button class="btn btn-outline-primary" data-action="modal-form#openModal" {#data-bs-toggle="modal" data-bs-target="#addNewCard"#}>Add Training
+                                    </button>
+                                    {{ include('_modal.html.twig',{
+                                        form: postForm,
+                                        extraForm: engagementPostForm,
+                                        secondExtraForm: trainingForm,
+                                        modalTitle: 'New Training',
+                                        routeName:'app_training_new'
+                                    }) }}
                                 </div>
                             </div>
                             <!--Search Form -->
@@ -82,68 +89,10 @@
                                     </div>
                                 </form>
                             </div>
+
                             <hr class="my-0"/>
                             <div class="card-datatable" data-reload-content-target="content">
-                                <table class="dt-advanced-search table">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Training</th>
-                                        <th>Place</th>
-                                        <th>Dep</th>
-                                        <th>Date</th>
-                                        <th>Trainers</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for training in trainings %}
-                                    <tr>
-                                        <td></td>
-                                        <td>{{ training.engagementPost.post.name }}</td>
-                                        <td>{{ training.engagementPost.place }}</td>
-                                        <td>{% for target in training.engagementPost.post%} {{ target }} <br>{% endfor %}</td>
-                                        <td>{{ training.engagementPost.date|date("m/d/Y") }}</td>
-                                        <td>{% for fName in training.trainers %} {{ fName }} <br>{% endfor %}</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button"
-                                                        class="btn btn-sm dropdown-toggle hide-arrow py-0"
-                                                        data-bs-toggle="dropdown">
-                                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item"
-                                                       data-action="click->edit-item#openEditModal"
-                                                       href="{{ path('app_training_modify', {id:training.engagementPost.post.id}) }}"
-                                                    >
-                                                        <i class="fa-solid fa-pen"></i>
-                                                        <span>Update</span>
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                       data-action="click->delete-item#deleteItem"
-                                                       href="{{ path('app_training_delete', {id:training.engagementPost.post.id}) }}"
-                                                    >
-                                                        <i class="fa-solid fa-trash"></i>
-                                                        <span>Delete</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                    <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th>Training</th>
-                                        <th>Place</th>
-                                        <th>Dep</th>
-                                        <th>Date</th>
-                                        <th>Trainers</th>
-                                        <th>Actions</th>
-                                    </tfoot>
-                                </table>
-                                <div id="test"></div>
+                                {{ include('trainings/table.html.twig') }}
                             </div>
                         </div>
                     </div>

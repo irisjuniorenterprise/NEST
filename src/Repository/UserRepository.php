@@ -80,4 +80,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    // find all users by array of departments
+    public function findByDepartments(array $departments): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.department IN (:departments)')
+            ->setParameter('departments', $departments)
+            ->getQuery()
+            ->getResult();
+    }
 }
