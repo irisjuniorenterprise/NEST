@@ -18,6 +18,7 @@ class LibraryController extends AbstractController
     #[Route('/library', name: 'app_library')]
     public function index(BiblioIRISRepository $biblioIRISRepository, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $template = $request->query->get('ajax') ? 'library/_table.html.twig' : 'library/index.html.twig';
         $form = $this->createForm(LibraryFormType::class);
         return $this->renderForm($template,
@@ -36,6 +37,7 @@ class LibraryController extends AbstractController
     #[Route('/library/new', name: 'app_library_new')]
     public function new(Request $request, BiblioIRISRepository $biblioIRISRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(LibraryFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -65,6 +67,7 @@ class LibraryController extends AbstractController
     #[Route('/library/delete/{id}', name: 'app_library_delete')]
     public function delete(BiblioIRISRepository $biblioIRISRepository, $id): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $library = $biblioIRISRepository->find($id);
         $biblioIRISRepository->remove($library, true);
         return $this->redirectToRoute('app_library');
@@ -77,6 +80,7 @@ class LibraryController extends AbstractController
     #[Route('/library/update/submit/{id}', name: 'app_library_update_submit')]
     public function update(Request $request, BiblioIRISRepository $biblioIRISRepository, BiblioIRIS $biblioIRIS): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(LibraryFormType::class, $biblioIRIS);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -94,6 +98,7 @@ class LibraryController extends AbstractController
                 'form' => $form,
                 'modalTitle' => 'Edit resource',
                 'routeName' => 'app_library',
+                'extraForm' => null,
             ], new Response(null, $form->isSubmitted() ? 422 : 200));
 
     }
@@ -101,6 +106,7 @@ class LibraryController extends AbstractController
     #[Route('/library/update/{id}', name: 'app_library_update')]
     public function edit(BiblioIRIS $biblioIRIS, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(LibraryFormType::class, $biblioIRIS);
         $template = $request->query->get('ajax') ? '_modal.edit.html.twig' : 'library/index.html.twig';
         return $this->renderForm($template,
@@ -108,6 +114,8 @@ class LibraryController extends AbstractController
                 'form' => $form,
                 'modalTitle' => 'Edit resource',
                 'routeName' => 'app_library_update_submit',
+                'extraForm' => null,
+                'secondExtraForm' => null,
                 'id' => $biblioIRIS->getId(),
                 'links' => $biblioIRIS->getFiles(),
             ]

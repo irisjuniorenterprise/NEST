@@ -59,7 +59,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         return new RedirectResponse(
-            $this->router->generate('/')
+            $this->router->generate('app_main')
         );
     }
 

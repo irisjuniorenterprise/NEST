@@ -7,6 +7,7 @@ use App\Entity\Blame;
 use App\form\BlameFormType;
 use App\Repository\BlameRepository;
 use App\Repository\UserRepository;
+use App\Service\NotificationService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,13 +18,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class BlameController extends AbstractController
 {
     #[Route('/blame', name: 'app_blame')]
-    public function index(BlameRepository $blameRepository, Request $request): Response
+    public function index(BlameRepository $blameRepository, Request $request, UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $template = $request->query->get('ajax') ? 'partials/_table.html.twig' : 'blame/index.html.twig';
         $form = $this->createForm(BlameFormType::class);
+        $roles  = ['ROLE_IT','ROLE_BUSINESS','ROLE_DEVCO','ROLE_MARKETING'];
+        $user = $userRepository->find($this->getUser()?->getId());
+        if (!in_array($user?->getRoles()[0], $roles, true)) {
+            $blames = $blameRepository->findAll();
+        }else{
+            $blames = $blameRepository->findByUserDepartment($user?->getDepartment()?->getName());
+        }
         return $this->renderForm($template, [
-            'blames' => $blameRepository->findBy([], ['id' => 'DESC']),
-            'blameForm' => $form,
+            'blames' => $blames,
+            'forms' => $form,
         ]);
     }
 
@@ -34,6 +43,7 @@ class BlameController extends AbstractController
     #[Route('/blame/new', name: 'app_blame_new')]
     public function new(BlameRepository $blameRepository, Request $request, UserRepository $userRepository):Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(BlameFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -45,6 +55,7 @@ class BlameController extends AbstractController
             $blame->setReason($data['reason']);
             $blameRepository->add($blame,true);
             $this->addFlash('success', 'Blame added');
+            NotificationService::sendBlameNotification('You have a new blame', $blame->getReason(),$blame->getEagle());
             if ($request->isXmlHttpRequest()) {
                 return new Response(null, 204);
             }
@@ -66,6 +77,7 @@ class BlameController extends AbstractController
     #[Route('/blame/delete/{id}', name: 'app_blame_delete')]
     public function delete(BlameRepository $blameRepository, $id): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $blame = $blameRepository->find($id);
         $blameRepository->remove($blame,true);
         return $this->redirectToRoute('app_blame');
@@ -74,12 +86,15 @@ class BlameController extends AbstractController
     #[Route('/blame/update/{id}', name: 'app_blame_update')]
     public function edit(Blame $blame, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(BlameFormType::class, $blame);
         $template = $request->query->get('ajax') ? '_modal.edit.html.twig' : 'blame/index.html.twig';
         return $this->renderForm($template, [
             'form' => $form,
             'modalTitle' => 'Edit blame',
             'routeName' => 'app_blame_update_submit',
+            'extraForm' => null,
+            'secondExtraForm' => null,
             'id' => $blame->getId(),
         ]);
     }
@@ -91,6 +106,7 @@ class BlameController extends AbstractController
     #[Route('/blame/update/submit/{id}', name: 'app_blame_update_submit', methods: ['POST'])]
     public function update(Blame $blame, Request $request, BlameRepository $blameRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(BlameFormType::class, $blame);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -110,24 +126,6 @@ class BlameController extends AbstractController
         ));
     }
 
-    #[Route('/workshop', name: 'app_workshop')]
-    public function workshopIndex(): Response
-    {
-        return $this->render('workshops/index.html.twig');
-    }
-
-
-    #[Route('/announcement', name: 'app_announcement')]
-    public function announcementIndex(): Response
-    {
-        return $this->render('announcements/index.html.twig');
-    }
-
-    #[Route('/meeting', name: 'app_meeting')]
-    public function meetingIndex(): Response
-    {
-        return $this->render('meetings/index.html.twig');
-    }
 
 
 }

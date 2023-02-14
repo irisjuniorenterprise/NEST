@@ -1,0 +1,72 @@
+<table class="dt-advanced-search table">
+    <thead>
+    <tr>
+        <th></th>
+        <th>workshop</th>
+        <th>Place</th>
+        <th>Dep</th>
+        <th>Date</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for post in workshops %}
+        <td></td>
+        <td>{{ post.name }}</td>
+        <td>{{ post.engagementPost.place}}</td>
+        <td>{% for dep in post.departments %}{{ dep }}<br>{% endfor %}</td>
+        <td>{{ post.publishDate|date('j F Y') }}</td>
+
+        <td>
+            <div class="dropdown">
+                <button type="button"
+                        class="btn btn-sm dropdown-toggle hide-arrow py-0"
+                        data-bs-toggle="dropdown">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item"
+                            {{ stimulus_controller('edit-item',{
+                                'url': path('app_workshop_update', {'id': post.id, 'ajax': 1})
+                            }) }}
+                       data-action="click->edit-item#openEditModal">
+                        <i class="fa-solid fa-pen"></i>
+                        <span>Update</span>
+                    </a>
+                    <a class="dropdown-item"
+                            {{ stimulus_controller('delete-item',{
+                                'url': path('app_workshop_delete', {'id': post.id})
+                            }) }}
+                        data-action="click->delete-item#deleteItem">
+                        <i class="fa-solid fa-trash"></i>
+
+                        <span>Delete</span>
+                    </a>
+
+                    <a class="dropdown-item"
+                            {{ stimulus_controller('comment-post',{
+                                'url': path('app_post_comment', {'id': post.id, 'ajax': 1})
+                            }) }}
+                       data-action="click->comment-post#comments" >
+                        <i class="fas fa-comment"></i>
+                        <span> Comments</span>
+                    </a>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+    {% endfor %}
+    <tfoot>
+    <tr>
+        <th></th>
+        <th>workshop</th>
+        <th>Place</th>
+        <th>Dep</th>
+        <th>Date</th>
+        <th>Actions</th>
+    </tfoot>
+</table>
+<div id="test"></div>
+<div id="comment"></div>

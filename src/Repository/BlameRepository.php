@@ -76,4 +76,18 @@ class BlameRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // find all blames by user department
+    public function findByUserDepartment($value)
+    {
+        return $this->createQueryBuilder('b')
+            ->join('b.eagle','u')
+            ->join('u.department','d')
+            ->where('d.name = :val')
+            ->setParameter('val', $value)
+            ->orderBy('b.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

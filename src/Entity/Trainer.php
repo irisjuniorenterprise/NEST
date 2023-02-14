@@ -26,7 +26,7 @@ class Trainer
     #[Groups(['post:read'])]
     private $lName;
 
-    #[ORM\ManyToMany(targetEntity: Training::class, inversedBy: 'trainers',cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Training::class, inversedBy: 'trainers',cascade: ['persist'])]
     private $Trainings;
 
     public function __construct()

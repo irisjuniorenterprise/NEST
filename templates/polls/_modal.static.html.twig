@@ -1,0 +1,28 @@
+<!-- add new card modal  -->
+<div
+        class="modal fade" id="modal"
+        data-target="modal"
+        tabindex="-1" aria-labelledby="addNewCardTitle"
+        aria-hidden="true"
+        data-static-poll-target="modal"
+>
+    <div data-target="modal" class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-sm-5 mx-50 pb-5">
+                <h1 data-action="click->modal-form#hideModal" class="text-center mb-1"
+                    id="addNewCardTitle">{{ modalTitle }}</h1>
+                <p class="text-center">Add card for future billing</p>
+
+                <!-- form -->
+                <div id="addNewCardValidation" class="row gy-1 gx-2 mt-75" {{ stimulus_controller('static-poll') }}
+                     data-static-poll-target="modalBody">
+                    {{ render_chart(chart) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ add new card modal  -->

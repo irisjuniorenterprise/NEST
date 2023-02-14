@@ -7,7 +7,7 @@ export default class extends Controller {
         url: String,
     };
     connect() {
-        useDispatch(this,{debug: true});
+        this.dispatch(this);
     }
 
     async deleteItem() {

@@ -13,6 +13,7 @@ class UserController extends AbstractController
     #[Route('/eagle', name: 'app_eagles')]
     public function index(UserRepository $userRepository ): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('eagles/index.html.twig', [
             'eagles' => $userRepository->findAll(),
         ]);
@@ -20,6 +21,7 @@ class UserController extends AbstractController
     #[Route('/blame', name: 'app_blames')]
     public function blameList(BlameRepository $blameRepository ): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $userRole=$this->getUser()->getRoles()[0];
         $department=explode('_',$userRole)[1];
         if ($userRole==='ROLE_HR' || $userRole==='ROLE_VP' || $userRole==='ROLE_PRESIDENT' ){
