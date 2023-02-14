@@ -43,6 +43,23 @@
                             <i class="fa-solid fa-trash"></i>
                             <span>Delete</span>
                         </a>
+                        <a class="dropdown-item"
+                                {{ stimulus_controller('static-poll',{
+                                    'url': path('app_poll_statics', {'id': post.poll.id, 'ajax': 1})
+                                }) }}
+                           data-action="click->static-poll#statics">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Statics</span>
+                        </a>
+
+                        <a class="dropdown-item"
+                                {{ stimulus_controller('comment-post',{
+                                    'url': path('app_post_comment', {'id': post.id, 'ajax': 1})
+                                }) }}
+                           data-action="click->comment-post#comments" >
+                            <i class="fas fa-comment"></i>
+                            <span> Comments</span>
+                        </a>
                     </div>
                 </div>
             </td>
@@ -59,3 +76,5 @@
     </tfoot>
 </table>
 <div id="test"></div>
+<div id="static"></div>
+<div id="comment"></div>

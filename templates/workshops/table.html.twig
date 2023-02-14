@@ -43,6 +43,15 @@
 
                         <span>Delete</span>
                     </a>
+
+                    <a class="dropdown-item"
+                            {{ stimulus_controller('comment-post',{
+                                'url': path('app_post_comment', {'id': post.id, 'ajax': 1})
+                            }) }}
+                       data-action="click->comment-post#comments" >
+                        <i class="fas fa-comment"></i>
+                        <span> Comments</span>
+                    </a>
                 </div>
             </div>
         </td>
@@ -60,3 +69,4 @@
     </tfoot>
 </table>
 <div id="test"></div>
+<div id="comment"></div>

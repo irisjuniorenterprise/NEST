@@ -20,6 +20,7 @@ class BlameController extends AbstractController
     #[Route('/blame', name: 'app_blame')]
     public function index(BlameRepository $blameRepository, Request $request, UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $template = $request->query->get('ajax') ? 'partials/_table.html.twig' : 'blame/index.html.twig';
         $form = $this->createForm(BlameFormType::class);
         $roles  = ['ROLE_IT','ROLE_BUSINESS','ROLE_DEVCO','ROLE_MARKETING'];
@@ -42,6 +43,7 @@ class BlameController extends AbstractController
     #[Route('/blame/new', name: 'app_blame_new')]
     public function new(BlameRepository $blameRepository, Request $request, UserRepository $userRepository):Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(BlameFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -75,6 +77,7 @@ class BlameController extends AbstractController
     #[Route('/blame/delete/{id}', name: 'app_blame_delete')]
     public function delete(BlameRepository $blameRepository, $id): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $blame = $blameRepository->find($id);
         $blameRepository->remove($blame,true);
         return $this->redirectToRoute('app_blame');
@@ -83,6 +86,7 @@ class BlameController extends AbstractController
     #[Route('/blame/update/{id}', name: 'app_blame_update')]
     public function edit(Blame $blame, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(BlameFormType::class, $blame);
         $template = $request->query->get('ajax') ? '_modal.edit.html.twig' : 'blame/index.html.twig';
         return $this->renderForm($template, [
@@ -102,6 +106,7 @@ class BlameController extends AbstractController
     #[Route('/blame/update/submit/{id}', name: 'app_blame_update_submit', methods: ['POST'])]
     public function update(Blame $blame, Request $request, BlameRepository $blameRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(BlameFormType::class, $blame);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

@@ -1,0 +1,52 @@
+<!-- add new card modal  -->
+<div
+        class="modal fade" id="modal"
+        data-target="modal"
+        tabindex="-1" aria-labelledby="addNewCardTitle"
+        aria-hidden="true"
+        data-comment-post-target="modal"
+>
+    <div data-target="modal" class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-sm-5 mx-50 pb-5">
+                <h1 data-action="click->modal-form#hideModal" class="text-center mb-1"
+                    id="addNewCardTitle">{{ modalTitle }}</h1>
+
+                <!-- form -->
+                <div id="addNewCardValidation" class="row gy-1 gx-2 mt-75" {{ stimulus_controller('comment-post') }}
+                     data-comment-post-target="modalBody">
+                    <div class="">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="">
+                                        <h4 class="my-1">Comments list</h4>
+                                        <ul class="list-group list-group-flush" id="multiple-list-group-a">
+                                            {% for comment in comments %}
+                                            <li class="list-group-item">
+                                                <div class="d-flex">
+                                                    <div class="more-info">
+                                                        <h5 class="text-uppercase">{{ comment.eagle.lName }} {{ comment.eagle.fName }}</h5>
+                                                        <p>{{ comment.eagle.department.name }} - {{ comment.date|date('j F Y h:m') }}</p>
+                                                        <span>"{{ comment.content }}"</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                                {% else %}
+                                                <p>No comments yet!</p>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ add new card modal  -->

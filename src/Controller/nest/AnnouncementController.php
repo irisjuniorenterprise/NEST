@@ -28,6 +28,7 @@ class AnnouncementController extends AbstractController
     #[Route('/announcement', name: 'app_announcement')]
     public function index(Request $request, DepartmentRepository $departmentRepository,UserRepository $userRepository,AnnouncementRepository $announcementRepository, PostRepository $postRepository   ): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $template = $request->query->get('ajax') ? 'announcements/table.html.twig' : 'announcements/index.html.twig';
         $announcementForm = $this->createForm(AnnouncementFormType::class);
         $postForm = $this->createForm(PostFormType::class);
@@ -50,6 +51,7 @@ class AnnouncementController extends AbstractController
     #[Route('/announcement/add', name: 'app_announcement_add')]
     public function add(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm = $this->createForm(PostFormType::class);
         $announcementForm = $this->createForm(AnnouncementFormType::class);
         return $this->renderForm('announcements/new.html.twig', [
@@ -66,6 +68,7 @@ class AnnouncementController extends AbstractController
     #[Route('/announcement/new', name: 'app_announcement_new')]
     public function new(AnnouncementRepository $announcementRepository, Request $request ,PostRepository $postRepository , ImageRepository $imageRepository, UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm=$this->createForm(PostFormType::class);
         $announcementForm = $this->createForm(AnnouncementFormType::class);
         $postForm->handleRequest($request);
@@ -116,6 +119,7 @@ class AnnouncementController extends AbstractController
     #[Route('/announcement/update/{id}', name: 'app_announcement_update')]
     public function edit(Request $request ,Post $post , AnnouncementRepository $announcementRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $announcement=$announcementRepository->find($request->query->get('announcementId'));
         $postForm = $this->createForm(PostFormType::class, $post);
         $announcementForm = $this->createForm(AnnouncementFormType::class, $announcement);
@@ -140,6 +144,7 @@ class AnnouncementController extends AbstractController
     #[Route('/announcement/update/submit/{id}', name: 'app_announcement_update_submit')]
     public function update(Request $request, AnnouncementRepository $announcementRepository,Post $post,PostRepository $postRepository , ImageRepository $imageRepository , UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $announcement=$announcementRepository->findOneBy(['post'=>$post]);
         $postForm = $this->createForm(PostFormType::class, $post);
         $announcementForm = $this->createForm(AnnouncementFormType::class, $announcement);
@@ -185,6 +190,7 @@ class AnnouncementController extends AbstractController
     #[Route('/announcement/delete/{id}', name: 'app_announcement_delete')]
     public function delete( PostRepository $postRepository , $id ): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $post = $postRepository->find($id);
         $postRepository->remove($post, true);
         return $this->redirectToRoute('app_announcement');
@@ -193,14 +199,10 @@ class AnnouncementController extends AbstractController
     #[Route('/announcement/deleteImage/{id}', name: 'app_announcement_delete_image')]
     public function deleteImage(Image $image, ImageRepository $imageRepository ): Response
     {
-
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         unlink('uploads/announcement/'.$image->getImageName());
         $imageRepository->remove($image , true);
-
         return $this->redirectToRoute('app_announcement');
-
-
-
     }
 
     #[Route('/test', name: 'app_test')]
@@ -226,6 +228,7 @@ class AnnouncementController extends AbstractController
     #[Route('/upload/announcement', name: 'app_announcement_upload', methods: ['POST'])]
     public function uploadAnnouncement($id,AnnouncementRepository $announcementRepository, ImageRepository $imageRepository): JsonResponse
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $announcement = $announcementRepository->find($id);
         $images = $_FILES;
         $targetDirectory = 'uploads/announcement/';

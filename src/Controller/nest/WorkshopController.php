@@ -31,6 +31,7 @@ class WorkshopController extends AbstractController
     #[Route('/workshop', name: 'app_workshop')]
     public function index(DepartmentRepository $departmentRepository,UserRepository $userRepository, PostRepository $postRepository,Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $template = $request->query->get('ajax') ? 'workshops/table.html.twig' : 'workshops/index.html.twig';
         $postForm = $this->createForm(PostFormType::class);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class);
@@ -51,6 +52,7 @@ class WorkshopController extends AbstractController
     #[Route('/workshop/add', name: 'app_workshop_add')]
     public function add(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm = $this->createForm(PostFormType::class);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class);
         return $this->renderForm('workshops/add.html.twig',
@@ -64,6 +66,7 @@ class WorkshopController extends AbstractController
     #[Route('/workshop/new', name: 'app_workshop_new')]
     public function new(Request $request, UserRepository $userRepository, PostRepository $postRepository, EngagementPostRepository $engagementPostRepository, WorkshopRepository $workshopRepository, WorkPostRepository $workPostRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm = $this->createForm(PostFormType::class);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class);
         $postForm->handleRequest($request);
@@ -124,6 +127,7 @@ class WorkshopController extends AbstractController
     #[Route('/workshop/delete/{id}', name: 'app_workshop_delete')]
     public function delete(PostRepository $postRepository,Post $post): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postRepository->remove($post, true);
         return $this->redirectToRoute('app_workshop');
     }
@@ -131,6 +135,7 @@ class WorkshopController extends AbstractController
     #[Route('/workshop/update/{id}', name: 'app_workshop_update')]
     public function edit(Request $request, EngagementPostRepository $engagementPostRepository, PostFormType $postFormType, Post $post, PostRepository $postRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $engagementPost=$engagementPostRepository->findOneBy(['post'=>$post]);
         $postForm = $this->createForm(PostFormType::class, $post);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class, $engagementPost);
@@ -150,6 +155,7 @@ class WorkshopController extends AbstractController
     #[Route('/workshop/update/submit/{id}', name: 'app_workshop_update_submit')]
     public function update(Request $request, EngagementPostRepository $engagementPostRepository, PostFormType $postFormType, Post $post, PostRepository $postRepository, UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $engagementPost=$engagementPostRepository->findOneBy(['post'=>$post]);
         $postForm = $this->createForm(PostFormType::class, $post);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class, $engagementPost);

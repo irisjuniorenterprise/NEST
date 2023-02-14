@@ -23,12 +23,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 class PollController extends AbstractController
 {
     #[Route('/poll', name: 'app_poll')]
-    public function index(PostRepository $postRepository, Request $request, UserRepository $userRepository, DepartmentRepository $departmentRepository): Response
+    public function index(PostRepository $postRepository, Request $request, UserRepository $userRepository, DepartmentRepository $departmentRepository, ChartBuilderInterface $chartBuilder): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $template = $request->query->get('ajax') ? 'polls/table.html.twig' : 'polls/index.html.twig';
         $pollForm = $this->createForm(PollFormType::class);
         $postForm = $this->createForm(PostFormType::class);
@@ -55,6 +58,7 @@ class PollController extends AbstractController
     #[Route('/poll/delete/{id}', name: 'app_poll_delete')]
     public function delete(PostRepository $postRepository, $id ): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postRepository->remove($postRepository->find($id), true);
         return $this->redirectToRoute('app_poll');
     }
@@ -66,6 +70,7 @@ class PollController extends AbstractController
     #[Route('/poll/new', name: 'app_poll_new')]
     public function new(PollRepository $pollRepository, UserRepository $userRepository, Request $request ,PostRepository $postRepository , PollOptionRepository $pollOptionRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm=$this->createForm(PostFormType::class);
         $pollForm= $this->createForm(PollFormType::class);
         $pollOptionForm=$this->createForm(PollOptionFormType::class);
@@ -125,6 +130,7 @@ class PollController extends AbstractController
     #[Route('/poll/add', name: 'app_poll_add')]
     public function add(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm = $this->createForm(PostFormType::class);
         $pollForm = $this->createForm(PollFormType::class);
         $pollOptionForm = $this->createForm(PollOptionFormType::class);
@@ -144,6 +150,7 @@ class PollController extends AbstractController
     #[Route('/poll/update/submit/{id}', name: 'app_poll_update_submit')]
     public function update(Request $request, PollRepository $pollRepository,Post $post,PostRepository $postRepository , PollOptionRepository $pollOptionRepository, UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $poll=$pollRepository->findOneBy(['post'=>$post]);
         $option=$pollOptionRepository->findOneBy(['poll'=>$poll]);
         $postForm = $this->createForm(PostFormType::class, $post);
@@ -208,6 +215,7 @@ class PollController extends AbstractController
     #[Route('/poll/update/{id}', name: 'app_poll_update')]
     public function edit(Request $request,Post $post, PollRepository $pollRepository, PollOptionRepository $pollOptionRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $poll=$pollRepository->findOneBy(['post'=>$post]);
         $options=$pollOptionRepository->findBy(['poll'=>$poll]);
         $postForm = $this->createForm(PostFormType::class, $post);
@@ -224,6 +232,38 @@ class PollController extends AbstractController
                 'id' => $post->getId(),
                 'post' => $post,
                 'options'=>$options,
+            ]);
+    }
+
+    #[Route('/poll/statics/{id}', name: 'app_poll_statics')]
+    public function statics(Request $request, ChartBuilderInterface $chartBuilder, Poll $poll): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $labels = [];
+        $data = [];
+        foreach ($poll->getPollOptions() as $option) {
+            $labels[] = $option->getValue();
+            $data[] = $option->getPollings()->count();
+        }
+        $chart = $chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
+        $chart->setData([
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Poll Statics!',
+                    'backgroundColor' => ['#1a3969', '#5ab8de', '#3074a9', '#ff6633'],
+                    'borderColor' => '#1A3969',
+                    'data' => $data,
+                    'pointBackgroundColor' => '#1A3969',
+                    'pointStyle' => 'rectRounded',
+                ],
+            ],
+        ]);
+        $template = $request->query->get('ajax') ? 'polls/_modal.static.html.twig' : 'polls/index.html.twig';
+        return $this->renderForm($template,
+            [
+                'chart' => $chart,
+                'modalTitle' => 'Statics of    '. $poll->getPost()?->getName(),
             ]);
     }
 }

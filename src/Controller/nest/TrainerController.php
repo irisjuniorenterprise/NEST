@@ -17,6 +17,7 @@ class TrainerController extends AbstractController
     #[Route('', name: 'app_trainer_index', methods: ['GET'])]
     public function index(TrainerRepository $trainerRepository, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $template = $request->query->get('ajax') ? 'trainer/table.html.twig' : 'trainer/index.html.twig';
         $trainerForm = $this->createForm(TrainerFormType::class);
         return $this->renderForm($template, [
@@ -28,6 +29,7 @@ class TrainerController extends AbstractController
     #[Route('/new', name: 'app_trainer_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, TrainerRepository $trainerRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $trainer = new Trainer();
         $form = $this->createForm(TrainerFormType::class, $trainer);
         $form->handleRequest($request);
@@ -52,6 +54,7 @@ class TrainerController extends AbstractController
     #[Route('/{id}/edit', name: 'app_trainer_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trainer $trainer, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(TrainerFormType::class, $trainer);
         $form->handleRequest($request);
 
@@ -78,6 +81,7 @@ class TrainerController extends AbstractController
     #[Route('/{id}/edit', name: 'app_trainer_update', methods: ['GET', 'POST'])]
     public function update(Request $request, Trainer $trainer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(TrainerFormType::class, $trainer);
         $template = $request->query->get('ajax') ? '_modal.edit.html.twig' : 'trainer/index.html.twig';
         return $this->renderForm($template, [
@@ -93,6 +97,7 @@ class TrainerController extends AbstractController
     #[Route('/delete/{id}', name: 'app_trainer_delete')]
     public function delete(Request $request, Trainer $trainer, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
             $entityManager->remove($trainer);
             $entityManager->flush();
         return $this->redirectToRoute('app_trainer_index', [], Response::HTTP_SEE_OTHER);

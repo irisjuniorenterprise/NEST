@@ -27,6 +27,7 @@ class TrainingController extends AbstractController
     #[Route('/training', name: 'app_training')]
     public function trainingIndex(Request $request, UserRepository $userRepository, PostRepository $postRepository, DepartmentRepository $departmentRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $template = $request->query->get('ajax') ? 'trainings/table.html.twig' : 'trainings/index.html.twig';
         $postForm = $this->createForm(PostFormType::class);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class);
@@ -49,6 +50,7 @@ class TrainingController extends AbstractController
     #[Route('/training/add', name: 'app_training_add')]
     public function addTrainingForm(TrainerRepository $trainerRepository):Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm = $this->createForm(PostFormType::class);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class);
         $trainingForm =$this->createForm(TrainingFormType::class);
@@ -63,6 +65,7 @@ class TrainingController extends AbstractController
     #[Route('/training/new', name: 'app_training_new')]
     public function submitNewTraining(Request $request, PostRepository $postRepository , UserRepository $userRepository, EngagementPostRepository $engagementPostRepository, TrainerRepository $trainerRepository ,TrainingRepository $trainingRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm = $this->createForm(PostFormType::class);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class);
         $trainingForm =$this->createForm(TrainingFormType::class);
@@ -127,6 +130,7 @@ class TrainingController extends AbstractController
     #[Route('/training/delete/{id}', name: 'app_training_delete')]
     public function deleteTraining(PostRepository $postRepository, Post $post): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postRepository->remove($post,true);
         return $this->redirectToRoute('app_training');
     }
@@ -134,6 +138,7 @@ class TrainingController extends AbstractController
     #[Route('/training/modify/{id}', name: 'app_training_modify')]
     public function modifyTrainingForm(TrainerRepository $trainerRepository, Request $request,Post $post , EngagementPostRepository $engagementPostRepository , TrainingRepository $trainingRepository):Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $engagementPost= $engagementPostRepository->findOneBy(['post'=>$post]);
         $postForm = $this->createForm(PostFormType::class ,$post);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class, $engagementPost);
@@ -155,6 +160,7 @@ class TrainingController extends AbstractController
     #[Route('/training/update/{id}', name: 'app_training_update')]
     public function updateTraining(Request $request ,Post $post,TrainerRepository $trainerRepository, UserRepository $userRepository,EngagementPostRepository $engagementPostRepository, PostRepository $postRepository, TrainingRepository $trainingRepository ): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm = $this->createForm(PostFormType::class , $post);
         $engagementPost= $engagementPostRepository->findOneBy(['post'=>$post] );
         $engagementPostForm = $this->createForm(EngagementPostFormType::class , $engagementPost);

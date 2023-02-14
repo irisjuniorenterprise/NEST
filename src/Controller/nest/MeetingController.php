@@ -32,6 +32,7 @@ class MeetingController extends AbstractController
     #[Route('/meeting', name: 'app_meeting')]
     public function index(Request $request, UserRepository $userRepository, PostRepository $postRepository, DepartmentRepository $departmentRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $template = $request->query->get('ajax') ? 'meetings/table.html.twig' : 'meetings/index.html.twig';
         $meetingForm = $this->createForm(MeetingFormType::class);
         $postForm = $this->createForm(PostFormType::class);
@@ -54,6 +55,7 @@ class MeetingController extends AbstractController
     #[Route('/meeting/add', name: 'app_meeting_add')]
     public function add(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm = $this->createForm(PostFormType::class);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class);
         $meetingForm = $this->createForm(MeetingFormType::class);
@@ -68,6 +70,7 @@ class MeetingController extends AbstractController
     #[Route('/meeting/new', name: 'app_meeting_new')]
     public function new(Request $request, UserRepository $userRepository, PostRepository $postRepository, EngagementPostRepository $engagementPostRepository, MeetingRepository $meetingRepository, WorkPostRepository $workPostRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm = $this->createForm(PostFormType::class);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class);
         $meetingForm = $this->createForm(MeetingFormType::class);
@@ -130,14 +133,15 @@ class MeetingController extends AbstractController
     #[Route('/meeting/delete/{id}', name: 'app_meeting_delete')]
     public function delete(Post $post, PostRepository $postRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postRepository->remove($post, true);
         return $this->redirectToRoute('app_meeting');
-
     }
 
     #[Route('/meeting/update/{id}', name: 'app_meeting_update')]
     public function edit(Request $request, Post $post, EngagementPostRepository $engagementPostRepository, MeetingRepository $meetingRepository, WorkPostRepository $workPostRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm = $this->createForm(PostFormType::class, $post);
         $engagementPost = $engagementPostRepository->findOneBy(['post' => $post]);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class, $engagementPost);
@@ -160,6 +164,7 @@ class MeetingController extends AbstractController
     #[Route('/meeting/update/submit/{id}', name: 'app_meeting_update_submit')]
     public function update(Request $request, PostRepository $postRepository, EngagementPostRepository $engagementPostRepository, MeetingRepository $meetingRepository, WorkPostRepository $workPostRepository, Post $post, UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $postForm = $this->createForm(PostFormType::class, $post);
         $engagementPost = $engagementPostRepository->findOneBy(['post' => $post]);
         $engagementPostForm = $this->createForm(EngagementPostFormType::class, $engagementPost);
