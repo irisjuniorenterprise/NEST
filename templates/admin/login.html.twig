@@ -14,11 +14,11 @@
                         <!-- Login basic -->
                         <div class="card mb-0">
                             <div class="card-body">
-                                <a href="#" class="brand-logo">
-                                    <img src="{{ asset('build/images/iris/iris-logo-blue.f33531e0.png') }}" alt="logo" height="auto" width="100%">
+                                <a href="#" class="brand-logo mb-4">
+                                    <img src="{{ asset('build/images/iris/iris-logo-blue.f33531e0.png') }}" alt="logo" height="auto" width="75%">
                                 </a>
 
-                                <h4 class="card-title mb-1 text-center">Welcome Treasurer</h4>
+                                <h4 class="card-title mb-1 text-center" style="font-family: Montserrat,serif!important; font-weight: bold!important; "></h4>
                                 {% if error %}
                                     <div class="alert alert-danger p-2">{{ error.messageKey|trans(error.messageData, 'security') }} </div>
                                 {% endif %}
